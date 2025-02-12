@@ -1,0 +1,69 @@
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col md="8">
+        <c-card-group>
+          <c-card class="p-4">
+            <c-card-body>
+              <form cForm>
+                <h1>Inicio de sesión</h1>
+                <p class="text-medium-emphasis">Ingrese sus credenciales</p>
+                <c-input-group class="mb-3">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilUser"></svg>
+                  </span>
+                  <input
+                    autoComplete="email"
+                    name="email"
+                    cFormControl
+                    placeholder="Correo"
+                  />
+                </c-input-group>
+                <c-input-group class="mb-4">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <input
+                    autoComplete="current-password"
+                    cFormControl
+                    name="password"
+                    placeholder="Contraseña"
+                    type="password"
+                  />
+                </c-input-group>
+                <c-row>
+                  <c-col xs="6">
+                    <button
+                      cButton
+                      class="px-4"
+                      color="primary"
+                    >
+                      Iniciar sesión
+                    </button>
+                  </c-col>
+                </c-row>
+              </form>
+            </c-card-body>
+          </c-card>
+          <c-card
+            [ngStyle]="{ 'width.%': 44 }"
+            class="text-white bg-primary py-5"
+          >
+            <c-card-body class="text-center">
+              <c-row>
+                <c-col>
+                  <h2>Bienvenido</h2>
+                  <br />
+                  <p>Este es el sistema de gestion de Party Hard</p>
+                  <img
+                    src="../../../../assets/images/logo2.png"
+                    width="100%"
+                /></c-col>
+              </c-row>
+            </c-card-body>
+          </c-card>
+        </c-card-group>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>

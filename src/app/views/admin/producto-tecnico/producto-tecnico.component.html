@@ -1,0 +1,264 @@
+<!-- ============================ Contenedor ============================ -->
+<c-container fluid>
+  <button
+    [routerLink]="['/' + rutas.urls.adminNavigate.url]"
+    cButton
+    class="mb-2"
+    color="primary"
+  >
+    <svg [cIcon]="icons.cilArrowLeft" size="md"></svg>
+  </button>
+  <!-- ============================ Filtro ============================ -->
+  <c-row class="mb-4">
+    <c-col xs="12">
+      <c-card>
+        <c-card-header>
+          <h6 class="fw-semibold">Filtro</h6>
+        </c-card-header>
+        <c-card-body>
+          <!-- ============================ Fila de objetos de filtro ============================ -->
+          <c-row class="justify-content-center text-center">
+            <!-- ============================ Nombre ============================ -->
+            <c-col md="6" class="my-2">
+              <c-row>
+                <c-col lg="3" xs="6">
+                  <label cLabel for="nameFt">Nombre producto:</label>
+                </c-col>
+                <c-col lg="9" xs="6">
+                  <input cFormControl id="nameFt" name="nameFt" type="text" />
+                </c-col>
+              </c-row>
+            </c-col>
+            <!-- ============================ descripcion ============================ -->
+            <c-col md="6" class="my-2">
+              <c-row>
+                <c-col lg="3" xs="6">
+                  <label cLabel for="descriptionFt"
+                    >Descripción producto:</label
+                  >
+                </c-col>
+                <c-col lg="9" xs="6">
+                  <input
+                    cFormControl
+                    id="descriptionFt"
+                    name="descriptionFt"
+                    type="text"
+                  />
+                </c-col>
+              </c-row>
+            </c-col>
+          </c-row>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+  <!-- ============================ Boton agregar ============================ -->
+  <c-row class="d-flex text-end">
+    <c-col>
+      <button class="mb-3" (click)="toggleModal(1)" cButton color="primary">
+        Agregar Producto <svg [cIcon]="icons.cilPlus" size="md"></svg>
+      </button>
+    </c-col>
+  </c-row>
+  <!-- ============================ Tabla ============================ -->
+  <c-row class="text-center justify-content-center">
+    <c-col>
+      <c-card>
+        <c-card-body>
+          <table cTable stripedColumns hover [responsive]="true">
+            <!-- ============================ Tabla - header ============================ -->
+            <thead>
+              <th>Nombre producto</th>
+              <th>Descripcion</th>
+              <th>Ubicacion</th>
+              <th>Capacidad técnica</th>
+              <th>Tipo de producto</th>
+              <th>Disponibilidad</th>
+              <th>Accion</th>
+            </thead>
+            <!-- ============================ Tabla - body ============================ -->
+            <tbody *ngFor="let producto of productoList">
+              <tr>
+                <td>{{ producto.nombre }}</td>
+                <td>{{ producto.descripcion }}</td>
+                <td>{{ producto.ubicacionProducto }}</td>
+                <td>{{ producto.capacidadTecnica }}</td>
+                <td>{{ producto.tipoProducto }}</td>
+                <td>
+                  {{ producto.esDisponible ? "Disponible" : "No disponible" }}
+                </td>
+                <td>
+                  <button
+                    cButton
+                    (click)="setEditProduct(producto)"
+                    (click)="toggleModal(2)"
+                    class="me-3 mb-2"
+                    color="primary"
+                  >
+                    <svg [cIcon]="icons.cilPen" size="md"></svg>
+                  </button>
+                  <button
+                    cButton
+                    (click)="setDeleteProduct(producto)"
+                    (click)="toggleModal(3)"
+                    class="mb-2"
+                    color="danger"
+                  >
+                    <svg [cIcon]="icons.cilTrash" size="md"></svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+</c-container>
+<!-- ============================ Modal ============================ -->
+<c-modal
+  [keyboard]="false"
+  [transition]="false"
+  [visible]="visibleUpdate"
+  id="updateModal"
+  size="lg"
+>
+  <c-modal-header>
+    <h5 cModalTitle>
+      {{ updating ? "Actualizar" : eliminating ? "Eliminar" : "Registrar" }}
+    </h5>
+    <button (click)="toggleModal(4)" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <c-container *ngIf="!eliminating" fluid>
+      <c-row class="justify-content-center">
+        <!-- ============== nombre ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="nameProduct">Nombre decoracion</label>
+          <input
+            type="text"
+            cFormControl
+            name="nameProduct"
+            id="nameProduct"
+            [(ngModel)]="editProducto.nombre"
+          />
+        </c-col>
+        <!-- ============== ubication ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="ubication">Ubicación del producto</label>
+          <input
+            type="text"
+            cFormControl
+            name="ubication"
+            id="ubication"
+            [(ngModel)]="editProducto.ubicacionProducto"
+          />
+        </c-col>
+        <!-- ============== fecha adquisicion ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="dateAcquisition">Fecha de adquisición</label>
+          <input
+            type="date"
+            cFormControl
+            name="dateAcquisition"
+            id="dateAcquisition"
+            [(ngModel)]="editProducto.fechaAdquisicion"
+          />
+        </c-col>
+        <!-- ============== estado disponible ============== -->
+        <c-col md="6" class="my-2">
+          <c-form-check>
+            <input
+              cFormCheckInput
+              id="estado"
+              type="checkbox"
+              [(ngModel)]="editProducto.esDisponible"
+            />
+            <label cFormCheckLabel for="estado">{{
+              editProducto.esDisponible ? "Disponible" : "No disponible"
+            }}</label>
+          </c-form-check>
+        </c-col>
+        <!-- ============== descripcion ============== -->
+        <c-col xs="12" class="my-2">
+          <label cLabel for="descriptionProduct">Descripción decoración</label>
+          <textarea
+            type="text"
+            cFormControl
+            rows="2"
+            name="descriptionProduct"
+            id="descriptionProduct"
+            [(ngModel)]="editProducto.descripcion"
+          ></textarea>
+        </c-col>
+        <!-- ============== capacidad tecnica ============== -->
+        <c-col xs="12" class="my-2">
+          <label cLabel for="techniqueCapacity">Capacidad técnica</label>
+          <textarea
+            cFormControl
+            rows="3"
+            name="techniqueCapacity"
+            id="techniqueCapacity"
+            [(ngModel)]="editProducto.capacidadTecnica"
+          ></textarea>
+        </c-col>
+        <!-- ============== tipo producto ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="tipoProducto">Tipo de producto</label>
+          <ng-select
+            class="mb-2"
+            name="tipoProducto"
+            id="tipoProducto"
+            [items]="catalogoList"
+            bindLabel="valorCatalogo"
+            [(ngModel)]="auxCatalogo"
+            (change)="selectTipoProducto(auxCatalogo)"
+          >
+          </ng-select>
+        </c-col>
+        <!-- ============== Colores ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="estadoProducto">Estado del producto</label>
+          <ng-select
+            class="mb-2"
+            name="estadoProducto"
+            id="estadoProducto"
+            [items]="catalogoList"
+            bindLabel="valorCatalogo"
+            [(ngModel)]="auxCatalogo"
+            (change)="selectStateProduct(auxCatalogo)"
+          >
+          </ng-select>
+        </c-col>
+        <!-- ============== imagenes ============== -->
+        <c-col xs="12" class="my-2">
+          <label cLabel for="imagenes">Imagenes</label>
+          <input cFormControl id="imagenes" multiple type="file" />
+        </c-col>
+      </c-row>
+    </c-container>
+    <h5 *ngIf="eliminating">¿Seguro de que quiere eliminar este registro?</h5>
+  </c-modal-body>
+  <c-modal-footer>
+    <button (click)="toggleModal(4)" cButton color="secondary">Cerrar</button>
+    <button
+      *ngIf="eliminating"
+      (click)="deleteProduct()"
+      cButton
+      color="primary"
+    >
+      Eliminar
+    </button>
+    <button *ngIf="updating" (click)="updateProduct()" cButton color="primary">
+      Actualizar
+    </button>
+    <button
+      *ngIf="!updating && !eliminating"
+      (click)="saveProduct()"
+      cButton
+      color="primary"
+    >
+      Guardar
+    </button>
+  </c-modal-footer>
+</c-modal>

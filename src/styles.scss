@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./scss/variables";
+$enable-ltr: true;
+$enable-rtl: true;
+
+@import "@coreui/coreui/scss/coreui";
+@import "~@coreui/icons/css/free.min.css";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+
+@import "./scss/layout";
+@import "./scss/fixes";
+@import "./scss/examples";
+@import "./scss/custom";

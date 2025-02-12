@@ -1,0 +1,30 @@
+<c-container
+  class="text-center page-404 bg-tertiary"
+  (mousemove)="handleMouseMove($event)"
+>
+  <c-row>
+    <c-col>
+      <div class="error-title">
+        <span>4</span>
+        <span
+          class="parallax-icon"
+          data-speed="5"
+          style="color: rgb(252, 141, 15)"
+        >
+          ✖</span
+        >
+        <span>4</span>
+      </div>
+      <h1 class="mt-4">Oops...</h1>
+      <p class="mb-4">Parece que ocurrió un problema inesperado</p>
+      <button
+        cButton
+        color="primary"
+        [routerLink]="['/' + rutas.urls.home.url]"
+        size="lg"
+      >
+        Ir a inicio
+      </button>
+    </c-col>
+  </c-row>
+</c-container>

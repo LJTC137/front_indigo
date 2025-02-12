@@ -1,0 +1,253 @@
+<!-- ============================ Contenedor ============================ -->
+<c-container fluid>
+  <button
+    [routerLink]="['/' + rutas.urls.adminNavigate.url]"
+    cButton
+    class="mb-2"
+    color="primary"
+  >
+    <svg [cIcon]="icons.cilArrowLeft" size="md"></svg>
+  </button>
+  <!-- ============================ Filtro ============================ -->
+  <c-row class="mb-4">
+    <c-col xs="12">
+      <c-card>
+        <c-card-header>
+          <h6 class="fw-semibold">Filtro</h6>
+        </c-card-header>
+        <c-card-body>
+          <!-- ============================ Fila de objetos de filtro ============================ -->
+          <c-row class="justify-content-center text-center">
+            <!-- ============================ descripcion ============================ -->
+            <c-col md="6" class="my-2">
+              <c-row>
+                <c-col lg="3" xs="6">
+                  <label cLabel for="descriptionFt">Descripción:</label>
+                </c-col>
+                <c-col lg="9" xs="6">
+                  <input
+                    cFormControl
+                    id="descriptionFt"
+                    name="descriptionFt"
+                    type="text"
+                  />
+                </c-col>
+              </c-row>
+            </c-col>
+            <!-- ============================ cantidad de personas ============================ -->
+            <c-col md="6" class="my-2">
+              <c-row>
+                <c-col lg="3" xs="6">
+                  <label cLabel for="peopleFt">Cantidad de personas:</label>
+                </c-col>
+                <c-col lg="9" xs="6">
+                  <input
+                    cFormControl
+                    id="peopleFt"
+                    name="peopleFt"
+                    type="number"
+                  />
+                </c-col>
+              </c-row>
+            </c-col>
+          </c-row>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+  <!-- ============================ Boton agregar ============================ -->
+  <c-row class="d-flex text-end">
+    <c-col>
+      <button class="mb-3" (click)="toggleModal(1)" cButton color="primary">
+        Agregar equipo <svg [cIcon]="icons.cilPlus" size="md"></svg>
+      </button>
+    </c-col>
+  </c-row>
+  <!-- ============================ Tabla ============================ -->
+  <c-row class="text-center justify-content-center">
+    <c-col>
+      <c-card>
+        <c-card-body>
+          <table cTable stripedColumns hover [responsive]="true">
+            <!-- ============================ Tabla - header ============================ -->
+            <thead>
+              <th>#</th>
+              <th>Descripcion</th>
+              <th>Tarifa por evento</th>
+              <th>Cantidad de personas</th>
+              <th>Precio por hora</th>
+              <th>Disponibilidad</th>
+              <th>Tipo de contratación</th>
+              <th>Tipo de equipo</th>
+              <th>Accion</th>
+            </thead>
+            <!-- ============================ Tabla - body ============================ -->
+            <tbody *ngFor="let equipo of equipoList">
+              <tr>
+                <td>{{ equipo.idEquipo }}</td>
+                <td>{{ equipo.descripcion }}</td>
+                <td>{{ equipo.tarifaXEvento }}</td>
+                <td>{{ equipo.cantidadPersonas }}</td>
+                <td>{{ equipo.precioXHora }}</td>
+                <td>{{ equipo.esDisponible ? 'Disponible' : 'Ocupado'}}</td>
+                <td>{{ equipo.tipoContratacion.valorCatalogo }}</td>
+                <td>{{ equipo.tipoEquipo.valorCatalogo }}</td>
+                <td>
+                  <button
+                    cButton
+                    (click)="seteditEquipo(equipo)"
+                    (click)="toggleModal(2)"
+                    class="me-3 mb-2"
+                    color="primary"
+                  >
+                    <svg [cIcon]="icons.cilPen" size="md"></svg>
+                  </button>
+                  <button
+                    cButton
+                    (click)="setDeleteEquipo(equipo)"
+                    (click)="toggleModal(3)"
+                    class="mb-2"
+                    color="danger"
+                  >
+                    <svg [cIcon]="icons.cilTrash" size="md"></svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+</c-container>
+<!-- ============================ Modal ============================ -->
+<c-modal
+  [keyboard]="false"
+  [transition]="false"
+  [visible]="visibleUpdate"
+  id="updateModal"
+  size="lg"
+>
+  <c-modal-header>
+    <h5 cModalTitle>
+      {{ updating ? "Actualizar" : eliminating ? "Eliminar" : "Registrar" }}
+    </h5>
+    <button (click)="toggleModal(4)" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <c-container *ngIf="!eliminating" fluid>
+      <c-row class="justify-content-center">
+        <!-- ============== tarifa x evento ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="tarifaXEvento">Tarifa por evento</label>
+          <input
+            type="number"
+            cFormControl
+            name="tarifaXEvento"
+            id="tarifaXEvento"
+            [(ngModel)]="editEquipo.tarifaXEvento"
+          />
+        </c-col>
+        <!-- ============== precio x hora ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="peopleQuantity">Precio por hora</label>
+          <input
+            type="number"
+            cFormControl
+            name="peopleQuantity"
+            id="peopleQuantity"
+            [(ngModel)]="editEquipo.cantidadPersonas"
+          />
+        </c-col>
+        <!-- ============== cantidad de personas ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="peopleQuantity">Cantidad de personas</label>
+          <input
+            type="number"
+            cFormControl
+            name="peopleQuantity"
+            id="peopleQuantity"
+            [(ngModel)]="editEquipo.cantidadPersonas"
+          />
+        </c-col>
+        <!-- ============== estado disponible ============== -->
+        <c-col md="6" class="my-2">
+          <c-form-check>
+            <input
+              cFormCheckInput
+              id="estadoDisponible"
+              type="checkbox"
+              [(ngModel)]="editEquipo.esDisponible"
+            />
+            <label cFormCheckLabel for="estadoDisponible">{{
+              editEquipo.esDisponible ? "Disponible" : "No disponible"
+            }}</label>
+          </c-form-check>
+        </c-col>
+        <!-- ============== descripcion ============== -->
+        <c-col xs="12" class="my-2">
+          <label cLabel for="descriptionService">Descripción</label>
+          <textarea
+            type="text"
+            cFormControl
+            rows="2"
+            name="descriptionService"
+            id="descriptionService"
+            [(ngModel)]="editEquipo.descripcion"
+          ></textarea>
+        </c-col>
+        <!-- ============== tipo contratacion ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="tipoContratacion">Tipo de contratación</label>
+          <ng-select
+            class="mb-2"
+            name="tipoContratacion"
+            id="tipoContratacion"
+            [items]="catalogoList"
+            bindLabel="valorCatalogo"
+            [(ngModel)]="auxCatalogo"
+            (change)="selectTipoEquipo(auxCatalogo)"
+          >
+          </ng-select>
+        </c-col>
+        <!-- ============== tipo equipo ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="tipoEquipo">Tipo de equipo</label>
+          <ng-select
+            class="mb-2"
+            name="tipoEquipo"
+            id="tipoEquipo"
+            [items]="catalogoList"
+            bindLabel="valorCatalogo"
+            [(ngModel)]="auxCatalogo"
+            (change)="selectTipoContratacion(auxCatalogo)"
+          >
+          </ng-select>
+        </c-col>
+      </c-row>
+    </c-container>
+    <h5 *ngIf="eliminating">¿Seguro de que quiere eliminar este registro?</h5>
+  </c-modal-body>
+  <c-modal-footer>
+    <button (click)="toggleModal(4)" cButton color="secondary">Cerrar</button>
+    <button
+      *ngIf="eliminating"
+      (click)="deleteEquipo()"
+      cButton
+      color="primary"
+    >
+      Eliminar
+    </button>
+    <button *ngIf="updating" (click)="updateEquipo()" cButton color="primary">
+      Actualizar
+    </button>
+    <button
+      *ngIf="!updating && !eliminating"
+      (click)="saveEquipo()"
+      cButton
+      color="primary"
+    >
+      Guardar
+    </button>
+  </c-modal-footer>
+</c-modal>

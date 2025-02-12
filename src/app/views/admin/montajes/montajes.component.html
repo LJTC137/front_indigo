@@ -1,0 +1,285 @@
+<!-- ============================ Contenedor ============================ -->
+<c-container fluid>
+  <button
+    [routerLink]="['/' + rutas.urls.adminNavigate.url]"
+    cButton
+    class="mb-2"
+    color="primary"
+  >
+    <svg [cIcon]="icons.cilArrowLeft" size="md"></svg>
+  </button>
+  <!-- ============================ Filtro ============================ -->
+  <c-row class="mb-4">
+    <c-col xs="12">
+      <c-card>
+        <c-card-header>
+          <h6 class="fw-semibold">Filtro</h6>
+        </c-card-header>
+        <c-card-body>
+          <!-- ============================ Fila de objetos de filtro ============================ -->
+          <c-row class="justify-content-center text-center">
+            <!-- ============================ Nombre ============================ -->
+            <c-col md="6" class="my-2">
+              <c-row>
+                <c-col lg="3" xs="6">
+                  <label cLabel for="nameFt">Nombre del Montaje:</label>
+                </c-col>
+                <c-col lg="9" xs="6">
+                  <input cFormControl id="nameFt" name="nameFt" type="text" />
+                </c-col>
+              </c-row>
+            </c-col>
+            <!-- ============================ Descripcion ============================ -->
+            <c-col md="6" class="my-2">
+              <c-row>
+                <c-col lg="3" xs="6">
+                  <label cLabel for="descripcionFt">Descripción:</label>
+                </c-col>
+                <c-col lg="9" xs="6">
+                  <input
+                    cFormControl
+                    id="descripcionFt"
+                    name="descripcionFt"
+                    type="text"
+                  />
+                </c-col>
+              </c-row>
+            </c-col>
+          </c-row>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+  <!-- ============================ Boton agregar ============================ -->
+  <c-row class="d-flex text-end">
+    <c-col>
+      <button class="mb-3" (click)="toggleModal(1)" cButton color="primary">
+        Agregar local <svg [cIcon]="icons.cilPlus" size="md"></svg>
+      </button>
+    </c-col>
+  </c-row>
+  <!-- ============================ Tabla ============================ -->
+  <c-row class="text-center justify-content-center">
+    <c-col>
+      <c-card>
+        <c-card-body>
+          <table cTable stripedColumns hover [responsive]="true">
+            <!-- ============================ Tabla - header ============================ -->
+            <thead>
+              <th>Nombre del montaje</th>
+              <th>Descripcion</th>
+              <th>Capacidad máxima</th>
+              <th>Costo mesa</th>
+              <th>Costo silla</th>
+              <th>Costo pack</th>
+              <th>Deposito Reembolsable</th>
+              <th>Disponibilidad</th>
+              <th>Accion</th>
+            </thead>
+            <!-- ============================ Tabla - body ============================ -->
+            <tbody *ngFor="let montaje of montajeList">
+              <tr>
+                <td>{{ montaje.nombre }}</td>
+                <td>{{ montaje.descripcion }}</td>
+                <td>{{ montaje.capacidadMaxima }}</td>
+                <td>{{ montaje.costoMesa }}</td>
+                <td>{{ montaje.costoSilla }}</td>
+                <td>{{ montaje.costoPack }}</td>
+                <td>{{ montaje.depositoReembolsable }}</td>
+                <td>
+                  <button
+                    cButton
+                    (click)="setEditMontaje(montaje)"
+                    (click)="toggleModal(2)"
+                    class="me-3 mb-2"
+                    color="primary"
+                  >
+                    <svg [cIcon]="icons.cilPen" size="md"></svg>
+                  </button>
+                  <button
+                    cButton
+                    (click)="setDeleteMontaje(montaje)"
+                    (click)="toggleModal(3)"
+                    class="mb-2"
+                    color="danger"
+                  >
+                    <svg [cIcon]="icons.cilTrash" size="md"></svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+</c-container>
+<!-- ============================ Modal ============================ -->
+<c-modal
+  [keyboard]="false"
+  [transition]="false"
+  [visible]="visibleUpdate"
+  id="updateModal"
+  size="lg"
+>
+  <c-modal-header>
+    <h5 cModalTitle>
+      {{ updating ? "Actualizar" : eliminating ? "Eliminar" : "Registrar" }}
+    </h5>
+    <button (click)="toggleModal(4)" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <c-container *ngIf="!eliminating" fluid>
+      <c-row class="justify-content-center">
+        <!-- ============== nombre ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="nombreMontaje">Nombre del montaje</label>
+          <input
+            type="text"
+            cFormControl
+            name="nombreMontaje"
+            id="nombreMontaje"
+            [(ngModel)]="editMontaje.nombre"
+          />
+        </c-col>
+        <!-- ============== capacidad maxima ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="capacidadMaxima">Capacidad máxima</label>
+          <input
+            type="number"
+            cFormControl
+            name="capacidadMaxima"
+            id="capacidadMaxima"
+            [(ngModel)]="editMontaje.capacidadMaxima"
+          />
+        </c-col>
+        <!-- ============== costo mesa ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="costoMesa">Costo mesa</label>
+          <input
+            type="number"
+            cFormControl
+            name="costoMesa"
+            id="costoMesa"
+            [(ngModel)]="editMontaje.costoMesa"
+          />
+        </c-col>
+        <!-- ============== costo silla ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="costoSilla">Costo silla</label>
+          <input
+            type="number"
+            cFormControl
+            name="costoSilla"
+            id="costoSilla"
+            [(ngModel)]="editMontaje.costoSilla"
+          />
+        </c-col>
+        <!-- ============== Costo pack ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="costoPack">Costo pack</label>
+          <input
+            type="number"
+            cFormControl
+            name="costoPack"
+            id="costoPack"
+            [(ngModel)]="editMontaje.costoPack"
+          />
+        </c-col>
+        <!-- ============== Deposito reembolsable ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="costoPack">Deposito reembolsable</label>
+          <input
+            type="number"
+            cFormControl
+            name="costoPack"
+            id="costoPack"
+            [(ngModel)]="editMontaje.costoPack"
+          />
+        </c-col>
+        <!-- ============== descripcion ============== -->
+        <c-col xs="12" class="my-2">
+          <label cLabel for="descriptionProduct">Descripción</label>
+          <textarea
+            type="text"
+            cFormControl
+            rows="2"
+            name="descriptionProduct"
+            id="descriptionProduct"
+            [(ngModel)]="editMontaje.descripcion"
+          ></textarea>
+        </c-col>
+        <!-- ============== estado disponible ============== -->
+        <c-col md="6" class="my-2">
+          <c-form-check>
+            <input
+              cFormCheckInput
+              id="estadoDisponible"
+              type="checkbox"
+              [(ngModel)]="editMontaje.esDisponible"
+            />
+            <label cFormCheckLabel for="estadoDisponible">{{
+              editMontaje.esDisponible ? "Disponible" : "No disponible"
+            }}</label>
+          </c-form-check>
+        </c-col>
+        <!-- ============== tipo montaje ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="tipoMontaje">Tipo de montaje</label>
+          <ng-select
+            class="mb-2"
+            name="tipoMontaje"
+            id="tipoMontaje"
+            [items]="catalogoList"
+            bindLabel="valorCatalogo"
+            [(ngModel)]="auxCatalogo"
+            (change)="selectTipoMontaje(auxCatalogo)"
+          >
+          </ng-select>
+        </c-col>
+        <!-- ============== tipo cobro ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="tipoCobro">Tipo de cobro</label>
+          <ng-select
+            class="mb-2"
+            name="tipoCobro"
+            id="tipoCobro"
+            [items]="catalogoList"
+            bindLabel="valorCatalogo"
+            [(ngModel)]="auxCatalogo"
+            (change)="selectTipoMontaje(auxCatalogo)"
+          >
+          </ng-select>
+        </c-col>
+        <!-- ============== imagenes ============== -->
+        <c-col xs="12" class="my-2">
+          <label cLabel for="imagenes">Imagenes</label>
+          <input cFormControl id="imagenes" multiple type="file" />
+        </c-col>
+      </c-row>
+    </c-container>
+    <h5 *ngIf="eliminating">¿Seguro de que quiere eliminar este registro?</h5>
+  </c-modal-body>
+  <c-modal-footer>
+    <button (click)="toggleModal(4)" cButton color="secondary">Cerrar</button>
+    <button
+      *ngIf="eliminating"
+      (click)="deleteMontaje()"
+      cButton
+      color="primary"
+    >
+      Eliminar
+    </button>
+    <button *ngIf="updating" (click)="updateMontaje()" cButton color="primary">
+      Actualizar
+    </button>
+    <button
+      *ngIf="!updating && !eliminating"
+      (click)="saveMontaje()"
+      cButton
+      color="primary"
+    >
+      Guardar
+    </button>
+  </c-modal-footer>
+</c-modal>

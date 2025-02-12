@@ -1,0 +1,236 @@
+<!-- ============================ Contenedor ============================ -->
+<c-container fluid>
+  <button
+    [routerLink]="['/' + rutas.urls.adminNavigate.url]"
+    cButton
+    class="mb-2"
+    color="primary"
+  >
+    <svg [cIcon]="icons.cilArrowLeft" size="md"></svg>
+  </button>
+  <!-- ============================ Filtro ============================ -->
+  <c-row class="mb-4">
+    <c-col xs="12">
+      <c-card>
+        <c-card-header>
+          <h6 class="fw-semibold">Filtro</h6>
+        </c-card-header>
+        <c-card-body>
+          <!-- ============================ Fila de objetos de filtro ============================ -->
+          <c-row class="justify-content-center text-center">
+            <!-- ============================ Nombre ============================ -->
+            <c-col xs="12" class="my-2">
+              <c-row>
+                <c-col lg="3" xs="6">
+                  <label cLabel for="nameFt">Nombre adorno:</label>
+                </c-col>
+                <c-col lg="9" xs="6">
+                  <input cFormControl id="nameFt" name="nameFt" type="text" />
+                </c-col>
+              </c-row>
+            </c-col>
+          </c-row>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+  <!-- ============================ Boton agregar ============================ -->
+  <c-row class="d-flex text-end">
+    <c-col>
+      <button class="mb-3" (click)="toggleModal(1)" cButton color="primary">
+        Agregar adorno <svg [cIcon]="icons.cilPlus" size="md"></svg>
+      </button>
+    </c-col>
+  </c-row>
+  <!-- ============================ Tabla ============================ -->
+  <c-row class="text-center justify-content-center">
+    <c-col>
+      <c-card>
+        <c-card-body>
+          <table cTable stripedColumns hover [responsive]="true">
+            <!-- ============================ Tabla - header ============================ -->
+            <thead>
+              <th>Nombre adorno</th>
+              <th>Descripcion</th>
+              <th>Dimensiones</th>
+              <th>Precio unitario</th>
+              <th>Cantidad</th>
+              <th>Accion</th>
+            </thead>
+            <!-- ============================ Tabla - body ============================ -->
+            <tbody *ngFor="let adorno of adornoList">
+              <tr>
+                <td>{{ adorno.nombre }}</td>
+                <td>{{ adorno.descripcion }}</td>
+                <td>{{ adorno.dimensiones }}</td>
+                <td>{{ adorno.precioUnitario }}</td>
+                <td>{{ adorno.cantidad }}</td>
+                <td>
+                  <button
+                    cButton
+                    (click)="setEditDecoration(adorno)"
+                    (click)="toggleModal(2)"
+                    class="me-3 mb-2"
+                    color="primary"
+                  >
+                    <svg [cIcon]="icons.cilPen" size="md"></svg>
+                  </button>
+                  <button
+                    cButton
+                    (click)="setDeleteDecoration(adorno)"
+                    (click)="toggleModal(3)"
+                    class="mb-2"
+                    color="danger"
+                  >
+                    <svg [cIcon]="icons.cilTrash" size="md"></svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+</c-container>
+<!-- ============================ Modal ============================ -->
+<c-modal
+  [keyboard]="false"
+  [transition]="false"
+  [visible]="visibleUpdate"
+  id="updateModal"
+  size="lg"
+>
+  <c-modal-header>
+    <h5 cModalTitle>
+      {{ updating ? "Actualizar" : eliminating ? "Eliminar" : "Registrar" }}
+    </h5>
+    <button (click)="toggleModal(4)" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <c-container *ngIf="!eliminating" fluid>
+      <c-row class="justify-content-center">
+        <!-- ============== descripcion ============== -->
+        <c-col xs="12" class="my-2">
+          <label cLabel for="descriptionDecoration"
+            >Descripción decoración</label
+          >
+          <textarea
+            type="text"
+            cFormControl
+            rows="3"
+            name="descriptionDecoration"
+            id="descriptionDecoration"
+            [(ngModel)]="editAdorno.descripcion"
+          ></textarea>
+        </c-col>
+        <!-- ============== nombre ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="nameDecoration">Nombre decoracion</label>
+          <input
+            type="text"
+            cFormControl
+            name="nameDecoration"
+            id="nameDecoration"
+            [(ngModel)]="editAdorno.nombre"
+          />
+        </c-col>
+        <!-- ============== dimensiones ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="dimensiones">Dimensiones del adorno</label>
+          <input
+            type="text"
+            cFormControl
+            name="dimensiones"
+            id="dimensiones"
+            [(ngModel)]="editAdorno.dimensiones"
+          />
+        </c-col>
+        <!-- ============== precio unitario ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="unitPrice">Precio unitario</label>
+          <input
+            type="number"
+            cFormControl
+            name="unitPrice"
+            id="unitPrice"
+            [(ngModel)]="editAdorno.precioUnitario"
+          />
+        </c-col>
+        <!-- ============== cantidad ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="quantity">Cantidad</label>
+          <input
+            type="number"
+            cFormControl
+            name="quantity"
+            id="quantity"
+            [(ngModel)]="editAdorno.cantidad"
+          />
+        </c-col>
+        <!-- ============== tipo adorno ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="tipoAdorno">Tipo adorno</label>
+          <ng-select
+            class="mb-2"
+            name="tipoAdorno"
+            id="tipoAdorno"
+            [items]="catalogoList"
+            bindLabel="valorCatalogo"
+            [(ngModel)]="auxCatalogo"
+            (change)="selectTipoAdorno(auxCatalogo)"
+          >
+          </ng-select>
+        </c-col>
+        <!-- ============== Colores ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="colorAdorno">Colores</label>
+          <ng-select
+            class="mb-2"
+            name="colorAdorno"
+            id="colorAdorno"
+            [selectableGroup]="true"
+            [items]="colorList"
+            bindLabel="nombre"
+            [(ngModel)]="auxColor"
+            (change)="selectColorAdorno(auxColor)"
+          >
+          </ng-select>
+        </c-col>
+        <!-- ============== imagenes ============== -->
+        <c-col xs="12" class="my-2">
+          <label cLabel for="imagenes">Imagenes</label>
+          <input cFormControl id="imagenes" multiple type="file" />
+        </c-col>
+      </c-row>
+    </c-container>
+    <h5 *ngIf="eliminating">¿Seguro de que quiere eliminar este registro?</h5>
+  </c-modal-body>
+  <c-modal-footer>
+    <button (click)="toggleModal(4)" cButton color="secondary">Cerrar</button>
+    <button
+      *ngIf="eliminating"
+      (click)="deleteDecoration()"
+      cButton
+      color="primary"
+    >
+      Eliminar
+    </button>
+    <button
+      *ngIf="updating"
+      (click)="updateDecoration()"
+      cButton
+      color="primary"
+    >
+      Actualizar
+    </button>
+    <button
+      *ngIf="!updating && !eliminating"
+      (click)="saveDecoration()"
+      cButton
+      color="primary"
+    >
+      Guardar
+    </button>
+  </c-modal-footer>
+</c-modal>

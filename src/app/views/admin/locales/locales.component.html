@@ -1,0 +1,297 @@
+<!-- ============================ Contenedor ============================ -->
+<c-container fluid>
+  <button
+    [routerLink]="['/' + rutas.urls.adminNavigate.url]"
+    cButton
+    class="mb-2"
+    color="primary"
+  >
+    <svg [cIcon]="icons.cilArrowLeft" size="md"></svg>
+  </button>
+  <!-- ============================ Filtro ============================ -->
+  <c-row class="mb-4">
+    <c-col xs="12">
+      <c-card>
+        <c-card-header>
+          <h6 class="fw-semibold">Filtro</h6>
+        </c-card-header>
+        <c-card-body>
+          <!-- ============================ Fila de objetos de filtro ============================ -->
+          <c-row class="justify-content-center text-center">
+            <!-- ============================ Nombre ============================ -->
+            <c-col md="6" class="my-2">
+              <c-row>
+                <c-col lg="3" xs="6">
+                  <label cLabel for="nameFt">Nombre del local:</label>
+                </c-col>
+                <c-col lg="9" xs="6">
+                  <input cFormControl id="nameFt" name="nameFt" type="text" />
+                </c-col>
+              </c-row>
+            </c-col>
+            <!-- ============================ aforo ============================ -->
+            <c-col md="6" class="my-2">
+              <c-row>
+                <c-col lg="3" xs="6">
+                  <label cLabel for="aforoFt">Aforo del local:</label>
+                </c-col>
+                <c-col lg="9" xs="6">
+                  <input cFormControl id="aforoFt" name="aforoFt" type="number" />
+                </c-col>
+              </c-row>
+            </c-col>
+            <!-- ============================ sector ============================ -->
+            <c-col md="6" class="my-2">
+              <c-row>
+                <c-col lg="3" xs="6">
+                  <label cLabel for="sectorFt">Sector del local:</label>
+                </c-col>
+                <c-col lg="9" xs="6">
+                  <input
+                    cFormControl
+                    id="sectorFt"
+                    name="sectorFt"
+                    type="text"
+                  />
+                </c-col>
+              </c-row>
+            </c-col>
+          </c-row>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+  <!-- ============================ Boton agregar ============================ -->
+  <c-row class="d-flex text-end">
+    <c-col>
+      <button class="mb-3" (click)="toggleModal(1)" cButton color="primary">
+        Agregar local <svg [cIcon]="icons.cilPlus" size="md"></svg>
+      </button>
+    </c-col>
+  </c-row>
+  <!-- ============================ Tabla ============================ -->
+  <c-row class="text-center justify-content-center">
+    <c-col>
+      <c-card>
+        <c-card-body>
+          <table cTable stripedColumns hover [responsive]="true">
+            <!-- ============================ Tabla - header ============================ -->
+            <thead>
+              <th>Nombre del local</th>
+              <th>Descripcion</th>
+              <th>Dimensiones</th>
+              <th>Sector</th>
+              <th>Dirección</th>
+              <th>Aforo</th>
+              <th>Estado de disponibilidad</th>
+              <th>Accion</th>
+            </thead>
+            <!-- ============================ Tabla - body ============================ -->
+            <tbody *ngFor="let local of localList">
+              <tr>
+                <td>{{ local.nombreLocal }}</td>
+                <td>{{ local.descripcion }}</td>
+                <td>{{ local.dimensiones }}</td>
+                <td>{{ local.sector }}</td>
+                <td>{{ local.direccion }}</td>
+                <td>{{ local.aforo }}</td>
+                <td>{{ local.estadoDisponibilidad.valorCatalogo }}</td>
+                <td>
+                  <button
+                    cButton
+                    (click)="setEditLocal(local)"
+                    (click)="toggleModal(2)"
+                    class="me-3 mb-2"
+                    color="primary"
+                  >
+                    <svg [cIcon]="icons.cilPen" size="md"></svg>
+                  </button>
+                  <button
+                    cButton
+                    (click)="setDeleteLocal(local)"
+                    (click)="toggleModal(3)"
+                    class="mb-2"
+                    color="danger"
+                  >
+                    <svg [cIcon]="icons.cilTrash" size="md"></svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+</c-container>
+<!-- ============================ Modal ============================ -->
+<c-modal
+  [keyboard]="false"
+  [transition]="false"
+  [visible]="visibleUpdate"
+  id="updateModal"
+  size="lg"
+>
+  <c-modal-header>
+    <h5 cModalTitle>
+      {{ updating ? "Actualizar" : eliminating ? "Eliminar" : "Registrar" }}
+    </h5>
+    <button (click)="toggleModal(4)" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <c-container *ngIf="!eliminating" fluid>
+      <c-row class="justify-content-center">
+        <!-- ============== nombre ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="nameLocal">Nombre del local</label>
+          <input
+            type="text"
+            cFormControl
+            name="nameLocal"
+            id="nameLocal"
+            [(ngModel)]="editLocal.nombreLocal"
+          />
+        </c-col>
+        <!-- ============== sector ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="sectorLocal">Sector del local</label>
+          <input
+            type="text"
+            cFormControl
+            name="sectorLocal"
+            id="sectorLocal"
+            [(ngModel)]="editLocal.sector"
+          />
+        </c-col>
+        <!-- ============== direccion ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="addressLocal">Dirección del local</label>
+          <input
+            type="text"
+            cFormControl
+            name="addressLocal"
+            id="addressLocal"
+            [(ngModel)]="editLocal.direccion"
+          />
+        </c-col>
+        <!-- ============== dimensiones ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="dimensionLocal">Dimensiones del local</label>
+          <input
+            type="text"
+            cFormControl
+            name="dimensionLocal"
+            id="dimensionLocal"
+            [(ngModel)]="editLocal.dimensiones"
+          />
+        </c-col>
+        <!-- ============== tarifaXhora ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="tarifaXHora">Tarifa por hora</label>
+          <input
+            type="number"
+            cFormControl
+            name="tarifaXHora"
+            id="tarifaXHora"
+            [(ngModel)]="editLocal.tarifaXHora"
+          />
+        </c-col>
+        <!-- ============== tarifaXdia ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="tarifaXDia">Tarifa por día</label>
+          <input
+            type="number"
+            cFormControl
+            name="tarifaXDia"
+            id="tarifaXDia"
+            [(ngModel)]="editLocal.tarifaXDia"
+          />
+        </c-col>
+        <!-- ============== aforo ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="aforoLocal">Aforo del local</label>
+          <input
+            type="number"
+            cFormControl
+            name="aforoLocal"
+            id="aforoLocal"
+            [(ngModel)]="editLocal.aforo"
+          />
+        </c-col>
+        <!-- ============== descripcion ============== -->
+        <c-col xs="12" class="my-2">
+          <label cLabel for="descriptionProduct">Descripción</label>
+          <textarea
+            type="text"
+            cFormControl
+            rows="2"
+            name="descriptionProduct"
+            id="descriptionProduct"
+            [(ngModel)]="editLocal.descripcion"
+          ></textarea>
+        </c-col>
+        <!-- ============== tipo local ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="tipoLocal">Tipo de local</label>
+          <ng-select
+            class="mb-2"
+            name="tipoLocal"
+            id="tipoLocal"
+            [items]="catalogoList"
+            bindLabel="valorCatalogo"
+            [(ngModel)]="auxCatalogo"
+            (change)="selectTipoLocal(auxCatalogo)"
+          >
+          </ng-select>
+        </c-col>
+        <!-- ============== Estado de disponibilidad ============== -->
+        <c-col md="6" class="my-2">
+          <label cLabel for="estadoLocal">Estado de disponibilidad</label>
+          <ng-select
+            class="mb-2"
+            name="estadoLocal"
+            id="estadoLocal"
+            [items]="catalogoList"
+            bindLabel="valorCatalogo"
+            [(ngModel)]="auxCatalogo"
+            (change)="selectStateLocal(auxCatalogo)"
+          >
+          </ng-select>
+        </c-col>
+        <!-- ============== imagenes ============== -->
+        <c-col xs="12" class="my-2">
+          <label cLabel for="imagenes">Imagenes</label>
+          <input cFormControl id="imagenes" multiple type="file" />
+        </c-col>
+      </c-row>
+    </c-container>
+    <h5 *ngIf="eliminating">¿Seguro de que quiere eliminar este registro?</h5>
+  </c-modal-body>
+  <c-modal-footer>
+    <button (click)="toggleModal(4)" cButton color="secondary">Cerrar</button>
+    <button
+      *ngIf="eliminating"
+      (click)="deleteLocal()"
+      cButton
+      color="primary"
+    >
+      Eliminar
+    </button>
+    <button
+      *ngIf="updating"
+      (click)="updateLocal()"
+      cButton
+      color="primary"
+    >
+      Actualizar
+    </button>
+    <button
+      *ngIf="!updating && !eliminating"
+      (click)="saveLocal()"
+      cButton
+      color="primary"
+    >
+      Guardar
+    </button>
+  </c-modal-footer>
+</c-modal>

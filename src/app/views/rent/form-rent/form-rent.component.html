@@ -1,0 +1,340 @@
+<!-- ============================ Contenedor ============================ -->
+<c-container fluid>
+  <!-- ============================ Tabla ============================ -->
+  <c-row class="justify-content-center mb-4">
+    <c-col>
+      <c-card>
+        <c-card-header> Datos de reserva </c-card-header>
+        <c-card-body>
+          <!-- ============================ Formulario ============================ -->
+          <form action="">
+            <c-row class="justify-content-center">
+              <!-- ======== Nombre cliente reserva ======== -->
+              <c-col lg="6" class="my-2">
+                <label cLabel for="nombreCliente">Nombre del cliente</label>
+                <input
+                  type="text"
+                  cFormControl
+                  name="nombreCliente"
+                  id="nombreCliente"
+                />
+              </c-col>
+              <!-- ======== Identificación cliente reserva ======== -->
+              <c-col lg="6" class="my-2">
+                <label cLabel for="identificacionCliente"
+                  >Identificación del cliente</label
+                >
+                <input
+                  type="text"
+                  cFormControl
+                  name="identificacionCliente"
+                  id="identificacionCliente"
+                />
+              </c-col>
+              <!-- ======== Telefono cliente reserva ======== -->
+              <c-col lg="6" class="my-2">
+                <label cLabel for="telefonoCliente"
+                  >Teléfono de contacto/cliente</label
+                >
+                <input
+                  type="text"
+                  cFormControl
+                  name="telefonoCliente"
+                  id="telefonoCliente"
+                />
+              </c-col>
+              <!-- ======== Cantidad personas ======== -->
+              <c-col lg="6" class="my-2">
+                <label cLabel for="cantidadPersonas"
+                  >Cantidad de invitados al evento</label
+                >
+                <input
+                  type="number"
+                  cFormControl
+                  name="cantidadPersonas"
+                  id="cantidadPersonas"
+                />
+              </c-col>
+              <!-- ======== Hora inicio ======== -->
+              <c-col lg="6" class="my-2">
+                <label cLabel for="horaInicio">Hora de inicio del evento</label>
+                <input
+                  type="text"
+                  cFormControl
+                  name="horaInicio"
+                  id="horaInicio"
+                />
+              </c-col>
+              <!-- ======== Hora fin ======== -->
+              <c-col lg="6" class="my-2">
+                <label cLabel for="horaInicio"
+                  >Hora de finalización del evento</label
+                >
+                <input
+                  type="text"
+                  cFormControl
+                  name="horaInicio"
+                  id="horaInicio"
+                />
+              </c-col>
+              <!-- ======== Fecha inicio de reserva ======== -->
+              <c-col lg="6" class="my-2">
+                <label cLabel for="fechaInicioEvento">Fecha del evento</label>
+                <input
+                  type="date"
+                  cFormControl
+                  name="fechaInicioEvento"
+                  id="fechaInicioEvento"
+                />
+              </c-col>
+              <!-- ======== Fecha fin de reserva ======== -->
+              <c-col lg="6" class="my-2">
+                <label cLabel for="fechaFinEvento"
+                  >Fecha de finalización del evento</label
+                >
+                <input
+                  type="date"
+                  cFormControl
+                  name="fechaFinEvento"
+                  id="fechaFinEvento"
+                />
+              </c-col>
+              <!-- ======== Asesor ======== -->
+              <hr class="my-4" />
+              <c-col lg="6" class="my-3">
+                <c-row>
+                  <c-col class="mb-1" xs="12">
+                    <label cLabel>Asesor para el evento</label>
+                  </c-col>
+                  <c-col class="mb-1" lg="6">
+                    <button cButton (click)="selectionModal('asesor')">
+                      Elegir asesor
+                    </button>
+                  </c-col>
+                </c-row>
+              </c-col>
+              <!-- ======== Adornos ======== -->
+              <c-col lg="6" class="my-3">
+                <c-row>
+                  <c-col class="mb-1" xs="12">
+                    <label cLabel>Adornos para el evento</label>
+                  </c-col>
+                  <c-col class="mb-1" lg="6">
+                    <button cButton (click)="selectionModal('adornos')">
+                      Elegir adornos
+                    </button>
+                  </c-col>
+                </c-row>
+              </c-col>
+              <!-- ======== select Productos tecnológicos ======== -->
+              <c-col lg="6" class="my-3">
+                <c-row>
+                  <c-col class="mb-1" xs="12">
+                    <label cLabel>Productos tecnológicos para el evento</label>
+                  </c-col>
+                  <c-col class="mb-1" lg="6">
+                    <button cButton (click)="selectionModal('productos')">
+                      Elegir productos
+                    </button>
+                  </c-col>
+                </c-row>
+              </c-col>
+              <!-- ======== select catering ======== -->
+              <c-col lg="6" class="my-3">
+                <c-row>
+                  <c-col class="mb-1" xs="12">
+                    <label cLabel>Catering para el evento</label>
+                  </c-col>
+                  <c-col class="mb-1" lg="6">
+                    <button cButton (click)="selectionModal('catering')">
+                      Elegir catering
+                    </button>
+                  </c-col>
+                </c-row>
+              </c-col>
+              <!-- ======== select Equipo ======== -->
+              <c-col lg="6" class="my-3">
+                <c-row>
+                  <c-col class="mb-1" xs="12">
+                    <label cLabel>Equipo de servicio para el evento</label>
+                  </c-col>
+                  <c-col class="mb-1" lg="6">
+                    <button cButton (click)="selectionModal('equipo')">
+                      Elegir equipo
+                    </button>
+                  </c-col>
+                </c-row>
+              </c-col>
+              <!-- ======== select Montaje ======== -->
+              <c-col lg="6" class="my-3">
+                <c-row>
+                  <c-col class="mb-1" xs="12">
+                    <label cLabel>Montaje para el evento</label>
+                  </c-col>
+                  <c-col class="mb-1" lg="6">
+                    <button cButton (click)="selectionModal('montaje')">
+                      Elegir montaje
+                    </button>
+                  </c-col>
+                </c-row>
+              </c-col>
+              <hr class="my-4" />
+              <!-- ======== Tipo de evento ======== -->
+              <c-col lg="6" class="my-3">
+                <label cLabel for="tipoEvento">Tipo de evento</label>
+                <ng-select
+                  name="tipoEvento"
+                  id="tipoEvento"
+                  [items]="catalogoList"
+                  bindLabel="valorCatalogo"
+                  [(ngModel)]="auxTipoEvento"
+                  (change)="selectTipoEvento(auxTipoEvento)"
+                >
+                </ng-select>
+              </c-col>
+              <!-- ======== Estado reserva ======== -->
+              <c-col lg="6" class="my-3">
+                <label cLabel for="estadoReserva">
+                  Estado de reserva de evento
+                </label>
+                <ng-select
+                  name="estadoReserva"
+                  id="estadoReserva"
+                  [items]="catalogoList"
+                  bindLabel="valorCatalogo"
+                  [(ngModel)]="auxEstadoReserva"
+                  (change)="selectEstadoReserva(auxEstadoReserva)"
+                >
+                </ng-select>
+              </c-col>
+              <!-- ======== Cantidad Sillas ======== -->
+              <c-col lg="6" class="my-2">
+                <label cLabel for="cantidadSillas">Cantidad de sillas</label>
+                <input
+                  type="number"
+                  cFormControl
+                  name="cantidadSillas"
+                  id="cantidadSillas"
+                />
+              </c-col>
+              <!-- ======== Cantidad Mesas ======== -->
+              <c-col lg="6" class="my-2">
+                <label cLabel for="cantidadMesas">Cantidad de mesas</label>
+                <input
+                  type="number"
+                  cFormControl
+                  name="cantidadMesas"
+                  id="cantidadMesas"
+                />
+              </c-col>
+            </c-row>
+          </form>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+</c-container>
+<c-modal
+  id="liveDemoModal"
+  [visible]="visible"
+  (visibleChange)="handleModalChange($event)"
+  size="xl"
+>
+  <c-modal-header>
+    <h5 cModalTitle>Modal title</h5>
+    <button (click)="selectionModal('asesor')" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <c-row class="justify-content-center">
+      <!-- ======== select asesor ======== -->
+      <c-col xs="12" class="mb-2" *ngIf="chooseAsesor === true">
+        <label cLabel for="asesor">Seleccione un Asesor</label>
+        <ng-select
+          class="mb-2"
+          name="asesor"
+          id="asesor"
+          [items]="asesorList"
+          bindLabel="nombreCompleto"
+          [(ngModel)]="auxAsesor"
+          (change)="selectAsesor(auxAsesor)"
+        >
+        </ng-select>
+      </c-col>
+      <!-- ======== select Adornos ======== -->
+      <c-col xs="12" class="mb-2" *ngIf="chooseAdornos === true">
+        <label cLabel for="adornoEvento">Seleccione un adorno</label>
+        <ng-select
+          class="mb-2"
+          name="adornoEvento"
+          id="adornoEvento"
+          [items]="adornosList"
+          bindLabel="nombreCompleto"
+        >
+        </ng-select>
+      </c-col>
+      <!-- ======== select Productos ======== -->
+      <c-col xs="12" class="mb-2" *ngIf="chooseProductos === true">
+        <label cLabel for="productoEvento">Seleccione una opción</label>
+        <ng-select
+          class="mb-2"
+          name="productoEvento"
+          id="productoEvento"
+          bindLabel="valorCatalogo"
+        >
+        </ng-select>
+      </c-col>
+      <!-- ======== select Catering ======== -->
+      <c-col xs="12" class="mb-2" *ngIf="chooseCatering === true">
+        <label cLabel for="servicioCatering"
+          >Seleccione un servicio de catering</label
+        >
+        <ng-select
+          class="mb-2"
+          name="servicioCatering"
+          id="servicioCatering"
+          bindLabel="valorCatalogo"
+        >
+        </ng-select>
+      </c-col>
+      <!-- ======== select Equipo ======== -->
+      <c-col xs="12" class="mb-2" *ngIf="chooseEquipo === true">
+        <label cLabel for="equipoServicio"
+          >Seleccione un equipo de servicio</label
+        >
+        <ng-select
+          class="mb-2"
+          name="equipoServicio"
+          id="equipoServicio"
+          bindLabel="valorCatalogo"
+        >
+        </ng-select>
+      </c-col>
+      <!-- ======== select Local ======== -->
+      <c-col xs="12" class="mb-2" *ngIf="chooseLocal === true">
+        <label cLabel for="localEvento">Seleccione un local</label>
+        <ng-select
+          class="mb-2"
+          name="localEvento"
+          id="localEvento"
+          bindLabel="valorCatalogo"
+        >
+        </ng-select>
+      </c-col>
+      <!-- ======== select Montaje ======== -->
+      <c-col xs="12" class="mb-2" *ngIf="chooseMontaje === true">
+        <label cLabel for="montajeEvento">Seleccione una opción</label>
+        <ng-select
+          class="mb-2"
+          name="montajeEvento"
+          id="montajeEvento"
+          bindLabel="valorCatalogo"
+        >
+        </ng-select>
+      </c-col>
+    </c-row>
+  </c-modal-body>
+  <c-modal-footer>
+    <button cButton color="primary">Guardar</button>
+    <button (click)="toggleModal()" cButton color="secondary">Cancelar</button>
+  </c-modal-footer>
+</c-modal>

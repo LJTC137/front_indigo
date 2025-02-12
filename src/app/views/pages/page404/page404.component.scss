@@ -1,0 +1,25 @@
+// Estilos únicamente para la pagina 404
+.page-404 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+  
+    .error-title {
+      font-size: 120px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      .parallax-icon {
+        font-size: 50px;
+        margin: 0 10px;
+        position: relative;
+        transition: transform 0.1s ease-out;
+      }
+    }
+  }
