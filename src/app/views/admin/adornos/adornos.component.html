@@ -71,7 +71,7 @@
                     (click)="setEditDecoration(adorno)"
                     (click)="toggleModal(2)"
                     class="me-3 mb-2"
-                    color="primary"
+                    color="info"
                   >
                     <svg [cIcon]="icons.cilPen" size="md"></svg>
                   </button>
@@ -178,7 +178,6 @@
             [items]="catalogoList"
             bindLabel="valorCatalogo"
             [(ngModel)]="auxCatalogo"
-            (change)="selectTipoAdorno(auxCatalogo)"
           >
           </ng-select>
         </c-col>
@@ -189,11 +188,12 @@
             class="mb-2"
             name="colorAdorno"
             id="colorAdorno"
-            [selectableGroup]="true"
-            [items]="colorList"
+            [items]="coloresList"
             bindLabel="nombre"
-            [(ngModel)]="auxColor"
+            [(ngModel)]="selectedColors"
             (change)="selectColorAdorno(auxColor)"
+            [multiple]="true"
+            placeholder="Selecciona colores"
           >
           </ng-select>
         </c-col>
@@ -207,7 +207,14 @@
     <h5 *ngIf="eliminating">¿Seguro de que quiere eliminar este registro?</h5>
   </c-modal-body>
   <c-modal-footer>
-    <button (click)="toggleModal(4)" cButton color="secondary">Cerrar</button>
+    <button
+      (click)="toggleModal(4)"
+      (click)="cleanData()"
+      cButton
+      color="secondary"
+    >
+      Cerrar
+    </button>
     <button
       *ngIf="eliminating"
       (click)="deleteDecoration()"

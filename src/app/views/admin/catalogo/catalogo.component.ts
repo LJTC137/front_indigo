@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { freeSet } from '@coreui/icons';
+import { ToastrService } from 'ngx-toastr';
 import { CatalogoModel } from 'src/app/models/catalogo.model';
+import { CatalogoService } from 'src/app/services/catalogo.service';
 import { variables } from 'src/app/variables';
 
 @Component({
@@ -8,7 +10,7 @@ import { variables } from 'src/app/variables';
   templateUrl: './catalogo.component.html',
   styleUrls: ['./catalogo.component.scss'],
 })
-export class CatalogoComponent {
+export class CatalogoComponent implements OnInit {
   rutas = variables;
   icons = freeSet;
   catalogoList: CatalogoModel[] = [];
@@ -17,7 +19,88 @@ export class CatalogoComponent {
   editCategory: CatalogoModel = new CatalogoModel();
   visibleUpdate: boolean = false;
 
-  constructor(){}
+  constructor(
+    private catalogoService: CatalogoService,
+    private toastrService: ToastrService
+  ) {}
+
+  ngOnInit(): void {
+    this.getCatalogos();
+  }
+
+  // ====== Obtener catalogos
+  private getCatalogos() {
+    this.catalogoService.getList().subscribe({
+      next: (data: CatalogoModel[]) => {
+        this.catalogoList = data;
+      },
+      error: (error) => {
+        this.toastrService.error(error, 'Error', {
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+        });
+      },
+    });
+  }
+
+  // ====== Guardar categoria
+  saveCategory() {
+    this.catalogoService.create(this.editCategory).subscribe({
+      next: (data: CatalogoModel) => {
+        this.editCategory = data;
+        this.visibleUpdate = false;
+        this.toastrService.success(
+          'Categoría guardada correctamente',
+          'Éxito',
+          {
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          }
+        );
+        this.getCatalogos();
+      },
+      error: (error) => {
+        console.error('Error al guardar el adorno:', error);
+
+        const errorMessage = error.error?.message || 'Error desconocido';
+        this.toastrService.error(errorMessage, 'Error', {
+          timeOut: 3000,
+          positionClass: 'toast-top-center',
+        });
+      },
+    });
+  }
+
+  // ====== Actualizar categoria
+  updateCategory() {
+    this.catalogoService
+      .update(this.editCategory.idCatalogo, this.editCategory)
+      .subscribe({
+        next: (data: CatalogoModel) => {
+          this.editCategory = data;
+          this.visibleUpdate = false;
+
+          this.toastrService.success(
+            'Categoría actualizada correctamente',
+            'Éxito',
+            {
+              timeOut: 3000,
+              positionClass: 'toast-top-right',
+            }
+          );
+          this.getCatalogos();
+        },
+        error: (error) => {
+          console.error('Error al actualizar la categoría:', error);
+
+          const errorMessage = error.error?.message || 'Error desconocido';
+          this.toastrService.error(errorMessage, 'Error', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center',
+          });
+        },
+      });
+  }
 
   // ====== Switch visibilidad modal
   toggleModal(number: number) {
@@ -43,20 +126,39 @@ export class CatalogoComponent {
     this.editCategory = category;
   }
 
-  setDeleteCategory(category: CatalogoModel){
+  setDeleteCategory(category: CatalogoModel) {
     category.estado = false;
-    this.editCategory = category
+    this.editCategory = category;
   }
 
-  deleteCategory(){
+  deleteCategory() {
+    this.editCategory.estado = false;
+    this.catalogoService
+      .update(this.editCategory.idCatalogo, this.editCategory)
+      .subscribe({
+        next: (data: CatalogoModel) => {
+          this.editCategory = data;
+          this.visibleUpdate = false;
 
-  }
+          this.toastrService.success(
+            'Catalogo eliminado correctamente',
+            'Éxito',
+            {
+              timeOut: 3000,
+              positionClass: 'toast-top-right',
+            }
+          );
+          this.getCatalogos();
+        },
+        error: (error) => {
+          console.error('Error al eliminar el catalogo:', error);
 
-  updateCategory(){
-
-  }
-
-  saveCategory(){
-
+          const errorMessage = error.error?.message || 'Error desconocido';
+          this.toastrService.error(errorMessage, 'Error', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center',
+          });
+        },
+      });
   }
 }

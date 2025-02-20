@@ -24,6 +24,8 @@ import { IconModule } from '@coreui/icons-angular';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { ColoresComponent } from './colores/colores.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { RouterModule } from '@angular/router';
     ProductoTecnicoComponent,
     UsuariosComponent,
     AdminNavigationComponent,
+    ColoresComponent,
   ],
   imports: [
     CommonModule,
@@ -52,6 +55,7 @@ import { RouterModule } from '@angular/router';
     TableModule,
     UtilitiesModule,
     ModalModule,
+    HttpClientModule,
   ],
 })
 export class AdminModule {}

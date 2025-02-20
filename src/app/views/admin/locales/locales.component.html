@@ -29,18 +29,23 @@
                 </c-col>
               </c-row>
             </c-col>
-            <!-- ============================ aforo ============================ -->
+            <!-- ============================ Aforo ============================ -->
             <c-col md="6" class="my-2">
               <c-row>
                 <c-col lg="3" xs="6">
                   <label cLabel for="aforoFt">Aforo del local:</label>
                 </c-col>
                 <c-col lg="9" xs="6">
-                  <input cFormControl id="aforoFt" name="aforoFt" type="number" />
+                  <input
+                    cFormControl
+                    id="aforoFt"
+                    name="aforoFt"
+                    type="number"
+                  />
                 </c-col>
               </c-row>
             </c-col>
-            <!-- ============================ sector ============================ -->
+            <!-- ============================ Sector ============================ -->
             <c-col md="6" class="my-2">
               <c-row>
                 <c-col lg="3" xs="6">
@@ -61,7 +66,7 @@
       </c-card>
     </c-col>
   </c-row>
-  <!-- ============================ Boton agregar ============================ -->
+  <!-- ============================ Botón agregar ============================ -->
   <c-row class="d-flex text-end">
     <c-col>
       <button class="mb-3" (click)="toggleModal(1)" cButton color="primary">
@@ -77,24 +82,28 @@
           <table cTable stripedColumns hover [responsive]="true">
             <!-- ============================ Tabla - header ============================ -->
             <thead>
-              <th>Nombre del local</th>
-              <th>Descripcion</th>
-              <th>Dimensiones</th>
-              <th>Sector</th>
-              <th>Dirección</th>
-              <th>Aforo</th>
-              <th>Estado de disponibilidad</th>
-              <th>Accion</th>
+              <tr>
+                <th>Nombre del local</th>
+                <th>Descripción</th>
+                <th>Dimensiones</th>
+                <th>Sector</th>
+                <th>Dirección</th>
+                <th>Aforo</th>
+                <th>Tipo de local</th>
+                <th>Estado de disponibilidad</th>
+                <th>Acción</th>
+              </tr>
             </thead>
             <!-- ============================ Tabla - body ============================ -->
-            <tbody *ngFor="let local of localList">
-              <tr>
+            <tbody>
+              <tr *ngFor="let local of localList">
                 <td>{{ local.nombreLocal }}</td>
                 <td>{{ local.descripcion }}</td>
                 <td>{{ local.dimensiones }}</td>
                 <td>{{ local.sector }}</td>
                 <td>{{ local.direccion }}</td>
                 <td>{{ local.aforo }}</td>
+                <td>{{ local.tipoLocal.valorCatalogo }}</td>
                 <td>{{ local.estadoDisponibilidad.valorCatalogo }}</td>
                 <td>
                   <button
@@ -124,6 +133,7 @@
     </c-col>
   </c-row>
 </c-container>
+
 <!-- ============================ Modal ============================ -->
 <c-modal
   [keyboard]="false"
@@ -141,7 +151,7 @@
   <c-modal-body>
     <c-container *ngIf="!eliminating" fluid>
       <c-row class="justify-content-center">
-        <!-- ============== nombre ============== -->
+        <!-- ============== Nombre ============== -->
         <c-col md="6" class="my-2">
           <label cLabel for="nameLocal">Nombre del local</label>
           <input
@@ -152,7 +162,7 @@
             [(ngModel)]="editLocal.nombreLocal"
           />
         </c-col>
-        <!-- ============== sector ============== -->
+        <!-- ============== Sector ============== -->
         <c-col md="6" class="my-2">
           <label cLabel for="sectorLocal">Sector del local</label>
           <input
@@ -163,7 +173,7 @@
             [(ngModel)]="editLocal.sector"
           />
         </c-col>
-        <!-- ============== direccion ============== -->
+        <!-- ============== Dirección ============== -->
         <c-col md="6" class="my-2">
           <label cLabel for="addressLocal">Dirección del local</label>
           <input
@@ -174,7 +184,7 @@
             [(ngModel)]="editLocal.direccion"
           />
         </c-col>
-        <!-- ============== dimensiones ============== -->
+        <!-- ============== Dimensiones ============== -->
         <c-col md="6" class="my-2">
           <label cLabel for="dimensionLocal">Dimensiones del local</label>
           <input
@@ -185,7 +195,7 @@
             [(ngModel)]="editLocal.dimensiones"
           />
         </c-col>
-        <!-- ============== tarifaXhora ============== -->
+        <!-- ============== Tarifa por hora ============== -->
         <c-col md="6" class="my-2">
           <label cLabel for="tarifaXHora">Tarifa por hora</label>
           <input
@@ -196,7 +206,7 @@
             [(ngModel)]="editLocal.tarifaXHora"
           />
         </c-col>
-        <!-- ============== tarifaXdia ============== -->
+        <!-- ============== Tarifa por día ============== -->
         <c-col md="6" class="my-2">
           <label cLabel for="tarifaXDia">Tarifa por día</label>
           <input
@@ -207,7 +217,7 @@
             [(ngModel)]="editLocal.tarifaXDia"
           />
         </c-col>
-        <!-- ============== aforo ============== -->
+        <!-- ============== Aforo ============== -->
         <c-col md="6" class="my-2">
           <label cLabel for="aforoLocal">Aforo del local</label>
           <input
@@ -218,19 +228,18 @@
             [(ngModel)]="editLocal.aforo"
           />
         </c-col>
-        <!-- ============== descripcion ============== -->
+        <!-- ============== Descripción ============== -->
         <c-col xs="12" class="my-2">
           <label cLabel for="descriptionProduct">Descripción</label>
           <textarea
-            type="text"
-            cFormControl
             rows="2"
+            cFormControl
             name="descriptionProduct"
             id="descriptionProduct"
             [(ngModel)]="editLocal.descripcion"
           ></textarea>
         </c-col>
-        <!-- ============== tipo local ============== -->
+        <!-- ============== Tipo de local ============== -->
         <c-col md="6" class="my-2">
           <label cLabel for="tipoLocal">Tipo de local</label>
           <ng-select
@@ -240,7 +249,6 @@
             [items]="catalogoList"
             bindLabel="valorCatalogo"
             [(ngModel)]="auxCatalogo"
-            (change)="selectTipoLocal(auxCatalogo)"
           >
           </ng-select>
         </c-col>
@@ -251,16 +259,15 @@
             class="mb-2"
             name="estadoLocal"
             id="estadoLocal"
-            [items]="catalogoList"
+            [items]="estadosList"
             bindLabel="valorCatalogo"
-            [(ngModel)]="auxCatalogo"
-            (change)="selectStateLocal(auxCatalogo)"
+            [(ngModel)]="auxEstado"
           >
           </ng-select>
         </c-col>
-        <!-- ============== imagenes ============== -->
+        <!-- ============== Imágenes ============== -->
         <c-col xs="12" class="my-2">
-          <label cLabel for="imagenes">Imagenes</label>
+          <label cLabel for="imagenes">Imágenes</label>
           <input cFormControl id="imagenes" multiple type="file" />
         </c-col>
       </c-row>
@@ -268,21 +275,18 @@
     <h5 *ngIf="eliminating">¿Seguro de que quiere eliminar este registro?</h5>
   </c-modal-body>
   <c-modal-footer>
-    <button (click)="toggleModal(4)" cButton color="secondary">Cerrar</button>
     <button
-      *ngIf="eliminating"
-      (click)="deleteLocal()"
+      (click)="toggleModal(4)"
+      (click)="cleanData()"
       cButton
-      color="primary"
+      color="secondary"
     >
+      Cerrar
+    </button>
+    <button *ngIf="eliminating" (click)="deleteLocal()" cButton color="primary">
       Eliminar
     </button>
-    <button
-      *ngIf="updating"
-      (click)="updateLocal()"
-      cButton
-      color="primary"
-    >
+    <button *ngIf="updating" (click)="updateLocal()" cButton color="primary">
       Actualizar
     </button>
     <button

@@ -5,6 +5,6 @@ export class CateringModel {
   nombreServicio: string = '';
   descripcion: string = '';
   precioXPersona: number = 0;
-  estado: boolean = false;
+  estado: boolean = true;
   tipoCatering: CatalogoModel = new CatalogoModel();
 }

@@ -10,6 +10,7 @@ import { MontajesComponent } from './montajes/montajes.component';
 import { ProductoTecnicoComponent } from './producto-tecnico/producto-tecnico.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { AdminNavigationComponent } from './admin-navigation/admin-navigation.component';
+import { ColoresComponent } from './colores/colores.component';
 
 const routes: Routes = [
   {
@@ -41,7 +42,7 @@ const routes: Routes = [
         path: 'advisors',
         component: AsesoresComponent,
         data: {
-          title: 'Adornos',
+          title: 'Asesores',
         },
       },
       {
@@ -56,6 +57,13 @@ const routes: Routes = [
         component: CatalogoComponent,
         data: {
           title: 'Catalogo',
+        },
+      },
+      {
+        path: 'colors',
+        component: ColoresComponent,
+        data: {
+          title: 'Colores',
         },
       },
       {

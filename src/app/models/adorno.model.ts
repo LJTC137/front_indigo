@@ -5,7 +5,7 @@ export class AdornoModel {
   idAdorno: number = 0;
   descripcion: string = '';
   nombre: string = '';
-  estado: boolean = false;
+  estado: boolean = true;
   dimensiones: string = '';
   precioUnitario: number = 0;
   cantidad: number = 0;

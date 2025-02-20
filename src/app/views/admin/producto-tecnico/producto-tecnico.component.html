@@ -8,6 +8,7 @@
   >
     <svg [cIcon]="icons.cilArrowLeft" size="md"></svg>
   </button>
+
   <!-- ============================ Filtro ============================ -->
   <c-row class="mb-4">
     <c-col xs="12">
@@ -16,9 +17,8 @@
           <h6 class="fw-semibold">Filtro</h6>
         </c-card-header>
         <c-card-body>
-          <!-- ============================ Fila de objetos de filtro ============================ -->
           <c-row class="justify-content-center text-center">
-            <!-- ============================ Nombre ============================ -->
+            <!-- Nombre producto -->
             <c-col md="6" class="my-2">
               <c-row>
                 <c-col lg="3" xs="6">
@@ -29,13 +29,11 @@
                 </c-col>
               </c-row>
             </c-col>
-            <!-- ============================ descripcion ============================ -->
+            <!-- Descripción producto -->
             <c-col md="6" class="my-2">
               <c-row>
                 <c-col lg="3" xs="6">
-                  <label cLabel for="descriptionFt"
-                    >Descripción producto:</label
-                  >
+                  <label cLabel for="descriptionFt">Descripción producto:</label>
                 </c-col>
                 <c-col lg="9" xs="6">
                   <input
@@ -52,7 +50,8 @@
       </c-card>
     </c-col>
   </c-row>
-  <!-- ============================ Boton agregar ============================ -->
+
+  <!-- ============================ Botón agregar ============================ -->
   <c-row class="d-flex text-end">
     <c-col>
       <button class="mb-3" (click)="toggleModal(1)" cButton color="primary">
@@ -60,38 +59,36 @@
       </button>
     </c-col>
   </c-row>
+
   <!-- ============================ Tabla ============================ -->
   <c-row class="text-center justify-content-center">
     <c-col>
       <c-card>
         <c-card-body>
           <table cTable stripedColumns hover [responsive]="true">
-            <!-- ============================ Tabla - header ============================ -->
             <thead>
-              <th>Nombre producto</th>
-              <th>Descripcion</th>
-              <th>Ubicacion</th>
-              <th>Capacidad técnica</th>
-              <th>Tipo de producto</th>
-              <th>Disponibilidad</th>
-              <th>Accion</th>
-            </thead>
-            <!-- ============================ Tabla - body ============================ -->
-            <tbody *ngFor="let producto of productoList">
               <tr>
+                <th>Nombre producto</th>
+                <th>Descripción</th>
+                <th>Ubicación</th>
+                <th>Capacidad técnica</th>
+                <th>Tipo de producto</th>
+                <th>Disponibilidad</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let producto of productoList">
                 <td>{{ producto.nombre }}</td>
                 <td>{{ producto.descripcion }}</td>
                 <td>{{ producto.ubicacionProducto }}</td>
                 <td>{{ producto.capacidadTecnica }}</td>
-                <td>{{ producto.tipoProducto }}</td>
-                <td>
-                  {{ producto.esDisponible ? "Disponible" : "No disponible" }}
-                </td>
+                <td>{{ producto.tipoProducto.valorCatalogo }}</td>
+                <td>{{ producto.esDisponible ? "Disponible" : "No disponible" }}</td>
                 <td>
                   <button
                     cButton
-                    (click)="setEditProduct(producto)"
-                    (click)="toggleModal(2)"
+                    (click)="setEditProduct(producto); toggleModal(2)"
                     class="me-3 mb-2"
                     color="primary"
                   >
@@ -99,8 +96,7 @@
                   </button>
                   <button
                     cButton
-                    (click)="setDeleteProduct(producto)"
-                    (click)="toggleModal(3)"
+                    (click)="setDeleteProduct(producto); toggleModal(3)"
                     class="mb-2"
                     color="danger"
                   >
@@ -115,6 +111,7 @@
     </c-col>
   </c-row>
 </c-container>
+
 <!-- ============================ Modal ============================ -->
 <c-modal
   [keyboard]="false"
@@ -132,9 +129,9 @@
   <c-modal-body>
     <c-container *ngIf="!eliminating" fluid>
       <c-row class="justify-content-center">
-        <!-- ============== nombre ============== -->
+        <!-- Nombre producto -->
         <c-col md="6" class="my-2">
-          <label cLabel for="nameProduct">Nombre decoracion</label>
+          <label cLabel for="nameProduct">Nombre producto</label>
           <input
             type="text"
             cFormControl
@@ -143,7 +140,7 @@
             [(ngModel)]="editProducto.nombre"
           />
         </c-col>
-        <!-- ============== ubication ============== -->
+        <!-- Ubicación del producto -->
         <c-col md="6" class="my-2">
           <label cLabel for="ubication">Ubicación del producto</label>
           <input
@@ -154,7 +151,7 @@
             [(ngModel)]="editProducto.ubicacionProducto"
           />
         </c-col>
-        <!-- ============== fecha adquisicion ============== -->
+        <!-- Fecha de adquisición -->
         <c-col md="6" class="my-2">
           <label cLabel for="dateAcquisition">Fecha de adquisición</label>
           <input
@@ -165,7 +162,7 @@
             [(ngModel)]="editProducto.fechaAdquisicion"
           />
         </c-col>
-        <!-- ============== estado disponible ============== -->
+        <!-- Estado disponible -->
         <c-col md="6" class="my-2">
           <c-form-check>
             <input
@@ -179,9 +176,9 @@
             }}</label>
           </c-form-check>
         </c-col>
-        <!-- ============== descripcion ============== -->
+        <!-- Descripción producto -->
         <c-col xs="12" class="my-2">
-          <label cLabel for="descriptionProduct">Descripción decoración</label>
+          <label cLabel for="descriptionProduct">Descripción producto</label>
           <textarea
             type="text"
             cFormControl
@@ -191,7 +188,7 @@
             [(ngModel)]="editProducto.descripcion"
           ></textarea>
         </c-col>
-        <!-- ============== capacidad tecnica ============== -->
+        <!-- Capacidad técnica -->
         <c-col xs="12" class="my-2">
           <label cLabel for="techniqueCapacity">Capacidad técnica</label>
           <textarea
@@ -202,7 +199,7 @@
             [(ngModel)]="editProducto.capacidadTecnica"
           ></textarea>
         </c-col>
-        <!-- ============== tipo producto ============== -->
+        <!-- Tipo de producto -->
         <c-col md="6" class="my-2">
           <label cLabel for="tipoProducto">Tipo de producto</label>
           <ng-select
@@ -216,37 +213,36 @@
           >
           </ng-select>
         </c-col>
-        <!-- ============== Colores ============== -->
+        <!-- Estado del producto -->
         <c-col md="6" class="my-2">
           <label cLabel for="estadoProducto">Estado del producto</label>
           <ng-select
             class="mb-2"
             name="estadoProducto"
             id="estadoProducto"
-            [items]="catalogoList"
+            [items]="estadoList"
             bindLabel="valorCatalogo"
-            [(ngModel)]="auxCatalogo"
-            (change)="selectStateProduct(auxCatalogo)"
+            [(ngModel)]="auxEstado"
+            (change)="selectStateProduct(auxEstado)"
           >
           </ng-select>
         </c-col>
-        <!-- ============== imagenes ============== -->
+        <!-- Imágenes -->
         <c-col xs="12" class="my-2">
           <label cLabel for="imagenes">Imagenes</label>
           <input cFormControl id="imagenes" multiple type="file" />
         </c-col>
       </c-row>
     </c-container>
-    <h5 *ngIf="eliminating">¿Seguro de que quiere eliminar este registro?</h5>
+    <h5 *ngIf="eliminating">
+      ¿Seguro de que quiere eliminar este registro?
+    </h5>
   </c-modal-body>
   <c-modal-footer>
-    <button (click)="toggleModal(4)" cButton color="secondary">Cerrar</button>
-    <button
-      *ngIf="eliminating"
-      (click)="deleteProduct()"
-      cButton
-      color="primary"
-    >
+    <button (click)="toggleModal(4)" cButton color="secondary">
+      Cerrar
+    </button>
+    <button *ngIf="eliminating" (click)="deleteProduct()" cButton color="primary">
       Eliminar
     </button>
     <button *ngIf="updating" (click)="updateProduct()" cButton color="primary">

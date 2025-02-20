@@ -4,7 +4,7 @@ export class AsesorModel {
   nombreCompleto: string = '';
   correo: string = '';
   telefono: string = '';
-  estado: boolean = false;
+  estado: boolean = true;
   descripcion: string = '';
   especialidad: string = '';
 }

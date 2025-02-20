@@ -30,6 +30,10 @@ export const variables = {
       url: 'admin/categories',
       name: 'Catalogo',
     },
+    color: {
+      url: 'admin/colors',
+      name: 'Colores',
+    },
     serviceTeam: {
       url: 'admin/serviceTeams',
       name: 'Equipos de servicio',

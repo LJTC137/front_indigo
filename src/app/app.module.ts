@@ -48,6 +48,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import locale from '@angular/common/locales/es';
 import { AdminModule } from './views/admin/admin.module';
 import { RentModule } from './views/rent/rent.module';
+import { ToastrModule } from 'ngx-toastr';
 
 registerLocaleData(locale);
 @NgModule({
@@ -80,6 +81,7 @@ registerLocaleData(locale);
     CardModule,
     NgScrollbarModule,
     ModalModule,
+    ToastrModule.forRoot(),
     //================ Modulos
     PagesModule,
     AdminModule,

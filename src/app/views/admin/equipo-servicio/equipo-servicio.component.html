@@ -8,6 +8,7 @@
   >
     <svg [cIcon]="icons.cilArrowLeft" size="md"></svg>
   </button>
+
   <!-- ============================ Filtro ============================ -->
   <c-row class="mb-4">
     <c-col xs="12">
@@ -16,9 +17,9 @@
           <h6 class="fw-semibold">Filtro</h6>
         </c-card-header>
         <c-card-body>
-          <!-- ============================ Fila de objetos de filtro ============================ -->
+          <!-- Filtro por Descripción y Cantidad de personas -->
           <c-row class="justify-content-center text-center">
-            <!-- ============================ descripcion ============================ -->
+            <!-- Descripción -->
             <c-col md="6" class="my-2">
               <c-row>
                 <c-col lg="3" xs="6">
@@ -34,7 +35,7 @@
                 </c-col>
               </c-row>
             </c-col>
-            <!-- ============================ cantidad de personas ============================ -->
+            <!-- Cantidad de personas -->
             <c-col md="6" class="my-2">
               <c-row>
                 <c-col lg="3" xs="6">
@@ -55,7 +56,8 @@
       </c-card>
     </c-col>
   </c-row>
-  <!-- ============================ Boton agregar ============================ -->
+
+  <!-- ============================ Botón agregar ============================ -->
   <c-row class="d-flex text-end">
     <c-col>
       <button class="mb-3" (click)="toggleModal(1)" cButton color="primary">
@@ -63,40 +65,40 @@
       </button>
     </c-col>
   </c-row>
+
   <!-- ============================ Tabla ============================ -->
   <c-row class="text-center justify-content-center">
     <c-col>
       <c-card>
         <c-card-body>
           <table cTable stripedColumns hover [responsive]="true">
-            <!-- ============================ Tabla - header ============================ -->
             <thead>
-              <th>#</th>
-              <th>Descripcion</th>
-              <th>Tarifa por evento</th>
-              <th>Cantidad de personas</th>
-              <th>Precio por hora</th>
-              <th>Disponibilidad</th>
-              <th>Tipo de contratación</th>
-              <th>Tipo de equipo</th>
-              <th>Accion</th>
-            </thead>
-            <!-- ============================ Tabla - body ============================ -->
-            <tbody *ngFor="let equipo of equipoList">
               <tr>
+                <th>#</th>
+                <th>Descripción</th>
+                <th>Tarifa por evento</th>
+                <th>Cantidad de personas</th>
+                <th>Precio por hora</th>
+                <th>Disponibilidad</th>
+                <th>Tipo de contratación</th>
+                <th>Tipo de equipo</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let equipo of equipoList">
                 <td>{{ equipo.idEquipo }}</td>
                 <td>{{ equipo.descripcion }}</td>
                 <td>{{ equipo.tarifaXEvento }}</td>
                 <td>{{ equipo.cantidadPersonas }}</td>
                 <td>{{ equipo.precioXHora }}</td>
-                <td>{{ equipo.esDisponible ? 'Disponible' : 'Ocupado'}}</td>
+                <td>{{ equipo.esDisponible ? "Disponible" : "Ocupado" }}</td>
                 <td>{{ equipo.tipoContratacion.valorCatalogo }}</td>
                 <td>{{ equipo.tipoEquipo.valorCatalogo }}</td>
                 <td>
                   <button
                     cButton
-                    (click)="seteditEquipo(equipo)"
-                    (click)="toggleModal(2)"
+                    (click)="seteditEquipo(equipo); toggleModal(2)"
                     class="me-3 mb-2"
                     color="primary"
                   >
@@ -104,8 +106,7 @@
                   </button>
                   <button
                     cButton
-                    (click)="setDeleteEquipo(equipo)"
-                    (click)="toggleModal(3)"
+                    (click)="setDeleteEquipo(equipo); toggleModal(3)"
                     class="mb-2"
                     color="danger"
                   >
@@ -120,6 +121,7 @@
     </c-col>
   </c-row>
 </c-container>
+
 <!-- ============================ Modal ============================ -->
 <c-modal
   [keyboard]="false"
@@ -137,7 +139,7 @@
   <c-modal-body>
     <c-container *ngIf="!eliminating" fluid>
       <c-row class="justify-content-center">
-        <!-- ============== tarifa x evento ============== -->
+        <!-- Tarifa por evento -->
         <c-col md="6" class="my-2">
           <label cLabel for="tarifaXEvento">Tarifa por evento</label>
           <input
@@ -148,7 +150,7 @@
             [(ngModel)]="editEquipo.tarifaXEvento"
           />
         </c-col>
-        <!-- ============== precio x hora ============== -->
+        <!-- Precio por hora -->
         <c-col md="6" class="my-2">
           <label cLabel for="peopleQuantity">Precio por hora</label>
           <input
@@ -156,10 +158,10 @@
             cFormControl
             name="peopleQuantity"
             id="peopleQuantity"
-            [(ngModel)]="editEquipo.cantidadPersonas"
+            [(ngModel)]="editEquipo.precioXHora"
           />
         </c-col>
-        <!-- ============== cantidad de personas ============== -->
+        <!-- Cantidad de personas -->
         <c-col md="6" class="my-2">
           <label cLabel for="peopleQuantity">Cantidad de personas</label>
           <input
@@ -170,7 +172,7 @@
             [(ngModel)]="editEquipo.cantidadPersonas"
           />
         </c-col>
-        <!-- ============== estado disponible ============== -->
+        <!-- Estado disponible -->
         <c-col md="6" class="my-2">
           <c-form-check>
             <input
@@ -179,38 +181,36 @@
               type="checkbox"
               [(ngModel)]="editEquipo.esDisponible"
             />
-            <label cFormCheckLabel for="estadoDisponible">{{
-              editEquipo.esDisponible ? "Disponible" : "No disponible"
-            }}</label>
+            <label cFormCheckLabel for="estadoDisponible">
+              {{ editEquipo.esDisponible ? "Disponible" : "No disponible" }}
+            </label>
           </c-form-check>
         </c-col>
-        <!-- ============== descripcion ============== -->
+        <!-- Descripción -->
         <c-col xs="12" class="my-2">
           <label cLabel for="descriptionService">Descripción</label>
           <textarea
-            type="text"
-            cFormControl
             rows="2"
+            cFormControl
             name="descriptionService"
             id="descriptionService"
             [(ngModel)]="editEquipo.descripcion"
           ></textarea>
         </c-col>
-        <!-- ============== tipo contratacion ============== -->
+        <!-- Tipo de contratación -->
         <c-col md="6" class="my-2">
           <label cLabel for="tipoContratacion">Tipo de contratación</label>
           <ng-select
             class="mb-2"
             name="tipoContratacion"
             id="tipoContratacion"
-            [items]="catalogoList"
+            [items]="contratosList"
             bindLabel="valorCatalogo"
-            [(ngModel)]="auxCatalogo"
-            (change)="selectTipoEquipo(auxCatalogo)"
+            [(ngModel)]="editEquipo.tipoContratacion"
           >
           </ng-select>
         </c-col>
-        <!-- ============== tipo equipo ============== -->
+        <!-- Tipo de equipo -->
         <c-col md="6" class="my-2">
           <label cLabel for="tipoEquipo">Tipo de equipo</label>
           <ng-select
@@ -219,8 +219,7 @@
             id="tipoEquipo"
             [items]="catalogoList"
             bindLabel="valorCatalogo"
-            [(ngModel)]="auxCatalogo"
-            (change)="selectTipoContratacion(auxCatalogo)"
+            [(ngModel)]="editEquipo.tipoEquipo"
           >
           </ng-select>
         </c-col>

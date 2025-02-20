@@ -19,29 +19,13 @@
           <!-- ============================ Fila de objetos de filtro ============================ -->
           <c-row class="justify-content-center text-center">
             <!-- ============================ Nombre ============================ -->
-            <c-col md="6" class="my-2">
+            <c-col xs="12" class="my-2">
               <c-row>
                 <c-col lg="3" xs="6">
-                  <label cLabel for="nameFt">Nombre del catering:</label>
+                  <label cLabel for="nameFt">Nombre color:</label>
                 </c-col>
                 <c-col lg="9" xs="6">
                   <input cFormControl id="nameFt" name="nameFt" type="text" />
-                </c-col>
-              </c-row>
-            </c-col>
-            <!-- ============================ descripcion ============================ -->
-            <c-col md="6" class="my-2">
-              <c-row>
-                <c-col lg="3" xs="6">
-                  <label cLabel for="descriptionFt">Descripción:</label>
-                </c-col>
-                <c-col lg="9" xs="6">
-                  <input
-                    cFormControl
-                    id="descriptionFt"
-                    name="descriptionFt"
-                    type="text"
-                  />
                 </c-col>
               </c-row>
             </c-col>
@@ -54,7 +38,7 @@
   <c-row class="d-flex text-end">
     <c-col>
       <button class="mb-3" (click)="toggleModal(1)" cButton color="primary">
-        Agregar catering <svg [cIcon]="icons.cilPlus" size="md"></svg>
+        Agregar color <svg [cIcon]="icons.cilPlus" size="md"></svg>
       </button>
     </c-col>
   </c-row>
@@ -66,23 +50,19 @@
           <table cTable stripedColumns hover [responsive]="true">
             <!-- ============================ Tabla - header ============================ -->
             <thead>
-              <th>Nombre del catering</th>
-              <th>Descripcion</th>
-              <th>Precio por persona</th>
-              <th>Tipo de catering</th>
-              <th>Accion</th>
+              <th>Nombre color</th>
+              <th>Código de color</th>
+              <th>Acción</th>
             </thead>
             <!-- ============================ Tabla - body ============================ -->
-            <tbody *ngFor="let catering of cateringList">
+            <tbody *ngFor="let color of coloresList">
               <tr>
-                <td>{{ catering.nombreServicio }}</td>
-                <td>{{ catering.descripcion }}</td>
-                <td>{{ catering.precioXPersona }}</td>
-                <td>{{ catering.tipoCatering }}</td>
+                <td>{{ color.nombre }}</td>
+                <td>{{ color.hexadecimal }}</td>
                 <td>
                   <button
                     cButton
-                    (click)="setEditCatering(catering)"
+                    (click)="setEditColor(color)"
                     (click)="toggleModal(2)"
                     class="me-3 mb-2"
                     color="primary"
@@ -91,7 +71,7 @@
                   </button>
                   <button
                     cButton
-                    (click)="setDeleteCatering(catering)"
+                    (click)="setDeleteColor(color)"
                     (click)="toggleModal(3)"
                     class="mb-2"
                     color="danger"
@@ -113,7 +93,6 @@
   [transition]="false"
   [visible]="visibleUpdate"
   id="updateModal"
-  size="lg"
 >
   <c-modal-header>
     <h5 cModalTitle>
@@ -123,86 +102,44 @@
   </c-modal-header>
   <c-modal-body>
     <c-container *ngIf="!eliminating" fluid>
-      <c-row class="justify-content-center">
-        <!-- ============== nombre ============== -->
-        <c-col md="6" class="my-2">
-          <label cLabel for="nameCatering">Nombre del catering</label>
+      <c-row>
+        <!-- ============== nombre color ============== -->
+        <c-col xs="12" class="my-2">
+          <label cLabel for="nameColor">Nombre color</label>
           <input
             type="text"
             cFormControl
-            name="nameCatering"
-            id="nameCatering"
-            [(ngModel)]="editCatering.nombreServicio"
+            name="nameColor"
+            id="nameColor"
+            [(ngModel)]="editColor.nombre"
           />
         </c-col>
-        <!-- ============== precioXpersona ============== -->
-        <c-col md="6" class="my-2">
-          <label cLabel for="precioXPersona">Precio por persona</label>
+        <!-- ============== valor color ============== -->
+        <c-col xs="12" class="my-2">
+          <label cLabel for="hexadecimal">Código color</label>
           <input
             type="text"
             cFormControl
-            name="precioXPersona"
-            id="precioXPersona"
-            [(ngModel)]="editCatering.precioXPersona"
+            name="hexadecimal"
+            id="hexadecimal"
+            [(ngModel)]="editColor.hexadecimal"
           />
-        </c-col>
-        <!-- ============== descripcion ============== -->
-        <c-col xs="12" class="my-2">
-          <label cLabel for="descriptionProduct">Descripción</label>
-          <textarea
-            type="text"
-            cFormControl
-            rows="2"
-            name="descriptionProduct"
-            id="descriptionProduct"
-            [(ngModel)]="editCatering.descripcion"
-          ></textarea>
-        </c-col>
-        <!-- ============== tipo catering ============== -->
-        <c-col md="6" class="my-2">
-          <label cLabel for="tipoCatering">Tipo de catering</label>
-          <ng-select
-            class="mb-2"
-            name="tipoCatering"
-            id="tipoCatering"
-            [items]="catalogoList"
-            bindLabel="valorCatalogo"
-            [(ngModel)]="auxCatalogo"
-          >
-          </ng-select>
-        </c-col>
-        <!-- ============== imagenes ============== -->
-        <c-col xs="12" class="my-2">
-          <label cLabel for="imagenes">Imagenes</label>
-          <input cFormControl id="imagenes" multiple type="file" />
         </c-col>
       </c-row>
     </c-container>
     <h5 *ngIf="eliminating">¿Seguro de que quiere eliminar este registro?</h5>
   </c-modal-body>
   <c-modal-footer>
-    <button
-      (click)="toggleModal(4)"
-      (click)="cleanData()"
-      cButton
-      color="secondary"
-    >
-      Cerrar
-    </button>
-    <button
-      *ngIf="eliminating"
-      (click)="deleteCatering()"
-      cButton
-      color="primary"
-    >
+    <button (click)="toggleModal(4)" cButton color="secondary">Cerrar</button>
+    <button *ngIf="eliminating" (click)="deleteColor()" cButton color="primary">
       Eliminar
     </button>
-    <button *ngIf="updating" (click)="updateCatering()" cButton color="primary">
+    <button *ngIf="updating" (click)="updateColor()" cButton color="primary">
       Actualizar
     </button>
     <button
       *ngIf="!updating && !eliminating"
-      (click)="saveCatering()"
+      (click)="saveColor()"
       cButton
       color="primary"
     >

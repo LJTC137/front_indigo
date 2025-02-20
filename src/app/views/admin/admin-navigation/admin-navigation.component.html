@@ -1,31 +1,28 @@
 <c-container fluid>
   <c-row class="text-center justify-content-center">
     <!-- ===================== Adornos ===================== -->
-    <c-col class="d-flex position-relative my-2" lg="4" md="6">
+    <c-col class="my-2" lg="4" md="6">
       <c-card>
         <c-card-body>
           <a
             [routerLink]="'/' + rutas.urls.decoration.url"
             class="stretched-link"
           >
-            <svg cIcon name="cilBadge" width="50%" class="text-secondary"></svg>
+            <svg cIcon name="cilBadge" width="28%" class="text-secondary"></svg>
           </a>
           <h4>Adornos</h4>
         </c-card-body>
       </c-card>
     </c-col>
     <!-- ===================== Asesores ===================== -->
-    <c-col class="d-flex position-relative my-2" lg="4" md="6">
+    <c-col class="my-2" lg="4" md="6">
       <c-card>
         <c-card-body>
-          <a
-            [routerLink]="'/' + rutas.urls.advisor.url"
-            class="stretched-link"
-          >
+          <a [routerLink]="'/' + rutas.urls.advisor.url" class="stretched-link">
             <svg
               cIcon
               name="cilUserFollow"
-              width="50%"
+              width="28%"
               class="text-secondary"
             ></svg>
           </a>
@@ -34,7 +31,7 @@
       </c-card>
     </c-col>
     <!-- ===================== Catering ===================== -->
-    <c-col class="d-flex position-relative my-2" lg="4" md="6">
+    <c-col class="my-2" lg="4" md="6">
       <c-card>
         <c-card-body
           ><a
@@ -44,7 +41,7 @@
             <svg
               cIcon
               name="cilRestaurant"
-              width="50%"
+              width="28%"
               class="text-secondary"
             ></svg>
           </a>
@@ -52,8 +49,24 @@
         </c-card-body>
       </c-card>
     </c-col>
+    <!-- ===================== Color ===================== -->
+    <c-col class="my-2" lg="4" md="6">
+      <c-card>
+        <c-card-body
+          ><a [routerLink]="'/' + rutas.urls.color.url" class="stretched-link">
+            <svg
+              cIcon
+              name="cilPaintBucket"
+              width="28%"
+              class="text-secondary"
+            ></svg>
+          </a>
+          <h4>Colores</h4>
+        </c-card-body>
+      </c-card>
+    </c-col>
     <!-- ===================== Catalogo ===================== -->
-    <c-col class="d-flex position-relative my-2" lg="4" md="6">
+    <c-col class="my-2" lg="4" md="6">
       <c-card>
         <c-card-body
           ><a
@@ -63,7 +76,7 @@
             <svg
               cIcon
               name="cilDescription"
-              width="50%"
+              width="28%"
               class="text-secondary"
             ></svg>
           </a>
@@ -72,7 +85,7 @@
       </c-card>
     </c-col>
     <!-- ===================== Equipos servicio ===================== -->
-    <c-col class="d-flex position-relative my-2" lg="4" md="6">
+    <c-col class="my-2" lg="4" md="6">
       <c-card>
         <c-card-body
           ><a
@@ -82,7 +95,7 @@
             <svg
               cIcon
               name="cilAddressBook"
-              width="50%"
+              width="28%"
               class="text-secondary"
             ></svg>
           </a>
@@ -91,17 +104,14 @@
       </c-card>
     </c-col>
     <!-- ===================== Locales ===================== -->
-    <c-col class="d-flex position-relative my-2" lg="4" md="6">
+    <c-col class="my-2" lg="4" md="6">
       <c-card>
         <c-card-body
-          ><a
-            [routerLink]="'/' + rutas.urls.local.url"
-            class="stretched-link"
-          >
+          ><a [routerLink]="'/' + rutas.urls.local.url" class="stretched-link">
             <svg
               cIcon
               name="cilBuilding"
-              width="50%"
+              width="28%"
               class="text-secondary"
             ></svg>
           </a>
@@ -110,42 +120,36 @@
       </c-card>
     </c-col>
     <!-- ===================== Montajes ===================== -->
-    <c-col class="d-flex position-relative my-2" lg="4" md="6">
+    <c-col class="my-2" lg="4" md="6">
       <c-card>
         <c-card-body
-          ><a
-            [routerLink]="'/' + rutas.urls.setUp.url"
-            class="stretched-link"
-          >
-            <svg cIcon name="cilSofa" width="50%" class="text-secondary"></svg>
+          ><a [routerLink]="'/' + rutas.urls.setUp.url" class="stretched-link">
+            <svg cIcon name="cilSofa" width="28%" class="text-secondary"></svg>
           </a>
           <h4>Montajes</h4>
         </c-card-body>
       </c-card>
     </c-col>
     <!-- ===================== Productos técnicos ===================== -->
-    <c-col class="d-flex position-relative my-2" lg="4" md="6">
+    <c-col class="my-2" lg="4" md="6">
       <c-card>
         <c-card-body
           ><a
             [routerLink]="'/' + rutas.urls.technicalProduct.url"
             class="stretched-link"
           >
-            <svg cIcon name="cilTv" width="50%" class="text-secondary"></svg>
+            <svg cIcon name="cilTv" width="28%" class="text-secondary"></svg>
           </a>
           <h4>Productos técnicos</h4>
         </c-card-body>
       </c-card>
     </c-col>
     <!-- ===================== Usuarios ===================== -->
-    <c-col class="d-flex position-relative my-2" lg="4" md="6">
+    <c-col class="my-2" lg="4" md="6">
       <c-card>
         <c-card-body
-          ><a
-            [routerLink]="'/' + rutas.urls.user.url"
-            class="stretched-link"
-          >
-            <svg cIcon name="cilUser" width="50%" class="text-secondary"></svg>
+          ><a [routerLink]="'/' + rutas.urls.user.url" class="stretched-link">
+            <svg cIcon name="cilUser" width="28%" class="text-secondary"></svg>
           </a>
           <h4>Usuarios</h4>
         </c-card-body>

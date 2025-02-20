@@ -5,7 +5,7 @@ export class EquipoServicioModel {
   descripcion: string = '';
   tarifaXEvento: number = 0;
   cantidadPersonas: number = 0;
-  estado: boolean = false;
+  estado: boolean = true;
   precioXHora: number = 0;
   esDisponible: boolean = false;
   tipoContratacion: CatalogoModel = new CatalogoModel();
