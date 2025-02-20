@@ -78,7 +78,7 @@
                 <td>{{ catering.nombreServicio }}</td>
                 <td>{{ catering.descripcion }}</td>
                 <td>{{ catering.precioXPersona }}</td>
-                <td>{{ catering.tipoCatering }}</td>
+                <td>{{ catering.tipoCatering.valorCatalogo }}</td>
                 <td>
                   <button
                     cButton
@@ -167,7 +167,7 @@
             id="tipoCatering"
             [items]="catalogoList"
             bindLabel="valorCatalogo"
-            [(ngModel)]="auxCatalogo"
+            [(ngModel)]="editCatering.tipoCatering"
           >
           </ng-select>
         </c-col>
