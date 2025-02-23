@@ -8,7 +8,7 @@ import { AsesorModel } from '../models/asesor.model';
   providedIn: 'root',
 })
 export class AsesorService {
-  private URL = variables.api.url + 'asesor';
+  private URL = variables.api.url + '/asesor';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -20,7 +20,7 @@ export class AsesorService {
     return this.httpClient.get<AsesorModel>(`${this.URL}/${id}`);
   }
 
-  create(data: AsesorModel): Observable<AsesorModel> {
+  create(data: AsesorModel): Observable<any> {
     return this.httpClient.post<AsesorModel>(`${this.URL}`, data);
   }
 

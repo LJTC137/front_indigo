@@ -8,7 +8,7 @@ import { TipoUsuarioModel } from '../models/tipo-usuario.model';
   providedIn: 'root',
 })
 export class TipoUsuarioService {
-  private URL = variables.api.url + 'tipoUsuario';
+  private URL = variables.api.url + '/tipoUsuario';
 
   constructor(private http: HttpClient) {}
 

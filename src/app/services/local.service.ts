@@ -8,7 +8,7 @@ import { LocalModel } from '../models/local.model';
   providedIn: 'root',
 })
 export class LocalService {
-  private URL = variables.api.url + 'local';
+  private URL = variables.api.url + '/local';
 
   constructor(private http: HttpClient) {}
 

@@ -4,9 +4,11 @@ import { ToastrService } from 'ngx-toastr';
 import { AdornoModel } from 'src/app/models/adorno.model';
 import { CatalogoModel } from 'src/app/models/catalogo.model';
 import { ColorModel } from 'src/app/models/color.model';
+import { ImageModel } from 'src/app/models/image.model';
 import { AdornoService } from 'src/app/services/adorno.service';
 import { CatalogoService } from 'src/app/services/catalogo.service';
 import { ColorService } from 'src/app/services/color.service';
+import { ImageService } from 'src/app/services/images.service';
 import { variables } from 'src/app/variables';
 
 @Component({
@@ -22,6 +24,7 @@ export class AdornosComponent implements OnInit {
   updating: boolean = false;
   eliminating: boolean = false;
   visibleUpdate: boolean = false;
+  isShowingGallery: boolean = false;
   //====== Catalogo
   catalogoList: CatalogoModel[] = [];
   auxCatalogo: CatalogoModel = new CatalogoModel();
@@ -29,12 +32,15 @@ export class AdornosComponent implements OnInit {
   auxColor: ColorModel = new ColorModel();
   coloresList: ColorModel[] = [];
   selectedColors: ColorModel[] = [];
+  imageList: ImageModel[] = [];
+  imagelistexample: any[] = [];
 
   constructor(
     private adornoService: AdornoService,
     private catalogoService: CatalogoService,
     private colorService: ColorService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private imageService: ImageService
   ) {}
 
   ngOnInit(): void {
@@ -98,16 +104,42 @@ export class AdornosComponent implements OnInit {
   saveDecoration() {
     this.editAdorno.tipoAdorno = this.auxCatalogo;
     this.editAdorno.adornoColor = this.selectedColors;
+    this.editAdorno.adornoColor = this.selectedColors.filter(
+      (color) => color.idColor !== 0 && color.nombre.trim() !== ''
+    );
     this.adornoService.create(this.editAdorno).subscribe({
-      next: (data: AdornoModel) => {
-        this.editAdorno = data;
+      next: (response) => {
         this.visibleUpdate = false;
-
         this.toastrService.success('Adorno guardado correctamente', 'Éxito', {
           timeOut: 3000,
           positionClass: 'toast-top-right',
         });
         this.getAdornos();
+        if (this.selectedFiles && this.selectedFiles.length > 0) {
+          this.imageService
+            .uploadImages('adorno', response.entityId, this.selectedFiles)
+            .subscribe({
+              next: (uploadResponse) => {
+                this.toastrService.success(
+                  'Imágenes subidas correctamente',
+                  'Éxito',
+                  {
+                    timeOut: 3000,
+                    positionClass: 'toast-top-right',
+                  }
+                );
+              },
+              error: (uploadError) => {
+                console.error('Error al subir imágenes:', uploadError);
+                const errMsg =
+                  uploadError.error?.message || 'Error desconocido';
+                this.toastrService.error(errMsg, 'Error', {
+                  timeOut: 3000,
+                  positionClass: 'toast-top-center',
+                });
+              },
+            });
+        }
       },
       error: (error) => {
         console.error('Error al guardar el adorno:', error);
@@ -121,24 +153,76 @@ export class AdornosComponent implements OnInit {
     });
   }
 
+  // Dentro de AdornosComponent
+  selectedFiles: FileList | null = null;
+
+  onFileSelected(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      this.selectedFiles = target.files;
+    }
+  }
+
+  cleanSelectedFiles() {
+    this.selectedFiles = null;
+  }
+
+  findImages(adorno: AdornoModel) {
+    this.imageService.findImages('adorno', adorno.idAdorno).subscribe({
+      next: (data) => {
+        this.imageList = data.map((img: any) => {
+          const fullUrl = `${variables.api.url.replace(/\/$/, '')}${img.url}`;
+          console.log('Imagen cargada:', fullUrl);
+          return { ...img, url: fullUrl };
+        });
+
+        console.log('Lista de imágenes final:', this.imageList);
+      },
+      error: (error) => {
+        console.error('Error al obtener imágenes:', error);
+      },
+    });
+  }
+
   // ====== Switch visibilidad modal
-  toggleModal(number: number) {
-    switch (number) {
+  toggleModal(mode: number): void {
+    switch (mode) {
+      case 1:
+        this.updating = false;
+        this.eliminating = false;
+        this.isShowingGallery = false;
+        this.editAdorno = new AdornoModel();
+        this.visibleUpdate = true;
+        break;
       case 2:
         this.updating = true;
+        this.eliminating = false;
+        this.isShowingGallery = false;
+        this.visibleUpdate = true;
         break;
       case 3:
         this.eliminating = true;
+        this.updating = false;
+        this.isShowingGallery = false;
+        this.visibleUpdate = true;
         break;
-      case 4:
+      case 5:
+        this.isShowingGallery = true;
         this.updating = false;
         this.eliminating = false;
+        this.visibleUpdate = true;
+        break;
+      case 4:
+        this.visibleUpdate = false;
+        this.updating = false;
+        this.eliminating = false;
+        this.isShowingGallery = false;
+        this.imageList = [];
         break;
       default:
-        this.editAdorno = new AdornoModel();
-        break;
+        this.visibleUpdate = !this.visibleUpdate;
+        this.cleanSelectedFiles();
     }
-    this.visibleUpdate = !this.visibleUpdate;
   }
 
   setEditDecoration(adorno: AdornoModel) {

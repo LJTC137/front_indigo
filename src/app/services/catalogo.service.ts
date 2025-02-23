@@ -8,7 +8,7 @@ import { CatalogoModel } from '../models/catalogo.model';
   providedIn: 'root',
 })
 export class CatalogoService {
-  private URL = variables.api.url + 'catalogo';
+  private URL = variables.api.url + '/catalogo';
 
   constructor(private http: HttpClient) {}
 

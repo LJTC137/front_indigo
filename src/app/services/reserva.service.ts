@@ -8,7 +8,7 @@ import { ReservaModel } from '../models/reserva.model';
   providedIn: 'root',
 })
 export class ReservaService {
-  private URL = variables.api.url + 'reserva';
+  private URL = variables.api.url + '/reserva';
 
   constructor(private http: HttpClient) {}
 

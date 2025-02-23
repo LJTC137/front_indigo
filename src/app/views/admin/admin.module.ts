@@ -14,6 +14,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 import {
   ButtonModule,
   CardModule,
+  CarouselModule,
   FormModule,
   GridModule,
   ModalModule,
@@ -46,6 +47,7 @@ import { ColoresComponent } from './colores/colores.component';
     AdminRoutingModule,
     GridModule,
     CardModule,
+    CarouselModule,
     FormModule,
     FormsModule,
     RouterModule,

@@ -8,7 +8,7 @@ import { EquipoServicioModel } from '../models/equipo-servicio.model';
   providedIn: 'root',
 })
 export class EquipoServicioService {
-  private URL = variables.api.url + 'equipoServicio';
+  private URL = variables.api.url + '/equipoServicio';
 
   constructor(private http: HttpClient) {}
 

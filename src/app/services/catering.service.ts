@@ -8,7 +8,8 @@ import { CateringModel } from '../models/catering.model';
   providedIn: 'root',
 })
 export class CateringService {
-  private URL = variables.api.url + 'catering';
+  private URL = variables.api.url + '/catering';
+  private uploadURL = variables.api.url + '/images/upload';
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +21,7 @@ export class CateringService {
     return this.http.get<CateringModel>(`${this.URL}/${id}`);
   }
 
-  create(data: CateringModel): Observable<CateringModel> {
+  create(data: CateringModel): Observable<any> {
     return this.http.post<CateringModel>(`${this.URL}`, data);
   }
 
@@ -30,5 +31,17 @@ export class CateringService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.URL}/${id}`);
+  }
+
+  uploadImages(idCatering: number, files: FileList): Observable<any> {
+    const formData = new FormData();
+    formData.append('entidadTipo', 'catering');
+    formData.append('entidadId', idCatering.toString());
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append('imagenes', files[i]);
+    }
+
+    return this.http.post(this.uploadURL, formData);
   }
 }

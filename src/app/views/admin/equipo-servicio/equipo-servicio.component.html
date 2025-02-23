@@ -74,7 +74,6 @@
           <table cTable stripedColumns hover [responsive]="true">
             <thead>
               <tr>
-                <th>#</th>
                 <th>Descripción</th>
                 <th>Tarifa por evento</th>
                 <th>Cantidad de personas</th>
@@ -87,7 +86,6 @@
             </thead>
             <tbody>
               <tr *ngFor="let equipo of equipoList">
-                <td>{{ equipo.idEquipo }}</td>
                 <td>{{ equipo.descripcion }}</td>
                 <td>{{ equipo.tarifaXEvento }}</td>
                 <td>{{ equipo.cantidadPersonas }}</td>
@@ -99,7 +97,7 @@
                   <button
                     cButton
                     (click)="seteditEquipo(equipo); toggleModal(2)"
-                    class="me-3 mb-2"
+                    class="mx-2 mb-2"
                     color="primary"
                   >
                     <svg [cIcon]="icons.cilPen" size="md"></svg>
@@ -107,7 +105,7 @@
                   <button
                     cButton
                     (click)="setDeleteEquipo(equipo); toggleModal(3)"
-                    class="mb-2"
+                    class="mx-2 mb-2"
                     color="danger"
                   >
                     <svg [cIcon]="icons.cilTrash" size="md"></svg>

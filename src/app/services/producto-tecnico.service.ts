@@ -8,7 +8,7 @@ import { ProductoTecnicoModel } from '../models/producto-tecnico.model';
   providedIn: 'root',
 })
 export class ProductoTecnicoService {
-  private URL = variables.api.url + 'productoTecnico';
+  private URL = variables.api.url + '/productoTecnico';
 
   constructor(private http: HttpClient) {}
 

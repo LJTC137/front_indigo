@@ -8,7 +8,7 @@ import { variables } from '../variables';
   providedIn: 'root',
 })
 export class AdornoXReservaService {
-  private URL = variables.api.url + 'adornoXReserva';
+  private URL = variables.api.url + '/adornoXReserva';
 
   constructor(private http: HttpClient) {}
 

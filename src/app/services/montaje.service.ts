@@ -8,7 +8,7 @@ import { MontajeModel } from '../models/montaje.model';
   providedIn: 'root',
 })
 export class MontajeService {
-  private URL = variables.api.url + 'montaje';
+  private URL = variables.api.url + '/montaje';
 
   constructor(private http: HttpClient) {}
 

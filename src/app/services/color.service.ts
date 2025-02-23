@@ -8,7 +8,7 @@ import { ColorModel } from '../models/color.model';
   providedIn: 'root',
 })
 export class ColorService {
-  private URL = variables.api.url + 'color';
+  private URL = variables.api.url + '/color';
 
   constructor(private http: HttpClient) {}
 

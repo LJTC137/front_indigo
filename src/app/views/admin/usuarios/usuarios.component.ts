@@ -86,6 +86,8 @@ export class UsuariosComponent implements OnInit {
       (tipo) =>
         tipo.idTipoUsuario !== 0 && tipo.nombre_tipo_usuario.trim() !== ''
     );
+    console.log(this.editUsuario);
+
     this.usuarioService
       .update(this.editUsuario.idUsuario, this.editUsuario)
       .subscribe({

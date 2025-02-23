@@ -103,6 +103,8 @@ export class LocalesComponent implements OnInit {
 
   // ====== Actualizar local
   updateLocal() {
+    this.editLocal.tipoLocal = this.auxCatalogo;
+    this.editLocal.estadoDisponibilidad = this.auxEstado;
     this.localService.update(this.editLocal.idLocal, this.editLocal).subscribe({
       next: (data: LocalModel) => {
         this.editLocal = data;

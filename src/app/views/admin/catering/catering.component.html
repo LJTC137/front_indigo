@@ -84,7 +84,7 @@
                     cButton
                     (click)="setEditCatering(catering)"
                     (click)="toggleModal(2)"
-                    class="me-3 mb-2"
+                    class="mx-2 mb-2"
                     color="primary"
                   >
                     <svg [cIcon]="icons.cilPen" size="md"></svg>
@@ -93,10 +93,19 @@
                     cButton
                     (click)="setDeleteCatering(catering)"
                     (click)="toggleModal(3)"
-                    class="mb-2"
+                    class="mx-2 mb-2"
                     color="danger"
                   >
                     <svg [cIcon]="icons.cilTrash" size="md"></svg>
+                  </button>
+                  <button
+                    cButton
+                    (click)="findImages(catering)"
+                    (click)="toggleModal(5)"
+                    class="mx-2 mb-2"
+                    color="warning"
+                  >
+                    <svg [cIcon]="icons.cilImage" size="md"></svg>
                   </button>
                 </td>
               </tr>
@@ -122,7 +131,7 @@
     <button (click)="toggleModal(4)" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <c-container *ngIf="!eliminating" fluid>
+    <c-container *ngIf="!eliminating && !isShowingGallery" fluid>
       <c-row class="justify-content-center">
         <!-- ============== nombre ============== -->
         <c-col md="6" class="my-2">
@@ -172,13 +181,48 @@
           </ng-select>
         </c-col>
         <!-- ============== imagenes ============== -->
+
         <c-col xs="12" class="my-2">
           <label cLabel for="imagenes">Imagenes</label>
-          <input cFormControl id="imagenes" multiple type="file" />
+          <input
+            cFormControl
+            id="imagenes"
+            multiple
+            type="file"
+            accept="image/png"
+            (change)="onFileSelected($event)"
+          />
         </c-col>
       </c-row>
     </c-container>
-    <h5 *ngIf="eliminating">¿Seguro de que quiere eliminar este registro?</h5>
+    <h5 *ngIf="eliminating && !isShowingGallery">
+      ¿Seguro de que quiere eliminar este registro?
+    </h5>
+    <c-container *ngIf="isShowingGallery">
+      <c-row class="justify-content-center">
+        <c-col xs="12" class="my-2">
+          <c-carousel *ngIf="imageList.length > 0" [interval]="5000">
+            <c-carousel-inner>
+              <c-carousel-item *ngFor="let image of imageList">
+                <img
+                  [src]="image.url"
+                  class="d-block w-100"
+                  alt="Imagen de adorno"
+                />
+              </c-carousel-item>
+            </c-carousel-inner>
+            <c-carousel-control
+              caption="Previous"
+              direction="prev"
+            ></c-carousel-control>
+            <c-carousel-control
+              caption="Next"
+              direction="next"
+            ></c-carousel-control>
+          </c-carousel>
+        </c-col>
+      </c-row>
+    </c-container>
   </c-modal-body>
   <c-modal-footer>
     <button

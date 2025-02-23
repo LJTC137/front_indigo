@@ -8,7 +8,7 @@ import { ReservaXEquipoModel } from '../models/reserva-X-equipo.model';
   providedIn: 'root',
 })
 export class ReservaXEquipoService {
-  private URL = variables.api.url + 'reservaXEquipo';
+  private URL = variables.api.url + '/reservaXEquipo';
 
   constructor(private http: HttpClient) {}
 

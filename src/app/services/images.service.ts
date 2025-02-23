@@ -1,33 +1,36 @@
-import { Injectable } from '@angular/core';
-import { variables } from '../variables';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { variables } from '../variables';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ImagesService {
-  private URL = variables.api.url + 'images';
+export class ImageService {
+  private uploadUrl = variables.api.url + '/images/upload';
 
   constructor(private http: HttpClient) {}
 
-  getList(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.URL}`);
+  uploadImages(
+    entidadTipo: string,
+    entidadId: number,
+    files: FileList
+  ): Observable<any> {
+    const formData = new FormData();
+    formData.append('entidadTipo', entidadTipo);
+    formData.append('entidadId', entidadId.toString());
+
+    // Agregar todos los archivos
+    for (let i = 0; i < files.length; i++) {
+      formData.append('imagenes', files[i]);
+    }
+
+    return this.http.post(this.uploadUrl, formData);
   }
 
-  getById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.URL}/${id}`);
-  }
-
-  create(data: any): Observable<any> {
-    return this.http.post<any>(`${this.URL}`, data);
-  }
-
-  update(id: number, data: any): Observable<any> {
-    return this.http.patch<any>(`${this.URL}/${id}`, data);
-  }
-
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.URL}/${id}`);
+  findImages(entidadTipo: string, entidadId: number): Observable<any> {
+    return this.http.get(
+      `${variables.api.url}/images?entidadTipo=${entidadTipo}&entidadId=${entidadId}`
+    );
   }
 }

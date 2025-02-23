@@ -8,7 +8,7 @@ import { AdornoModel } from '../models/adorno.model';
   providedIn: 'root',
 })
 export class AdornoService {
-  private URL = variables.api.url + 'adorno';
+  private URL = variables.api.url + '/adorno';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -20,7 +20,7 @@ export class AdornoService {
     return this.httpClient.get<AdornoModel>(`${this.URL}/${id}`);
   }
 
-  create(data: AdornoModel): Observable<AdornoModel> {
+  create(data: AdornoModel): Observable<any> {
     return this.httpClient.post<AdornoModel>(`${this.URL}`, data);
   }
 
