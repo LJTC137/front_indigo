@@ -6,6 +6,8 @@ import { LocalService } from 'src/app/services/local.service';
 import { CatalogoService } from 'src/app/services/catalogo.service';
 import { ToastrService } from 'ngx-toastr';
 import { variables } from 'src/app/variables';
+import { ImageModel } from 'src/app/models/image.model';
+import { ImageService } from 'src/app/services/images.service';
 
 @Component({
   selector: 'app-locales',
@@ -24,11 +26,14 @@ export class LocalesComponent implements OnInit {
   auxCatalogo: CatalogoModel = new CatalogoModel();
   catalogoList: CatalogoModel[] = [];
   estadosList: CatalogoModel[] = [];
+  isShowingGallery: boolean = false;
+  imageList: ImageModel[] = [];
 
   constructor(
     private localService: LocalService,
     private catalogoService: CatalogoService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private imageService: ImageService
   ) {}
 
   ngOnInit(): void {
@@ -76,19 +81,73 @@ export class LocalesComponent implements OnInit {
     });
   }
 
+  selectedFiles: FileList | null = null;
+
+  onFileSelected(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      this.selectedFiles = target.files;
+    }
+  }
+
+  cleanSelectedFiles() {
+    this.selectedFiles = null;
+  }
+
+  findImages(local: LocalModel) {
+    this.imageService.findImages('local', local.idLocal).subscribe({
+      next: (data) => {
+        this.imageList = data.map((img: any) => {
+          const fullUrl = `${variables.api.url.replace(/\/$/, '')}${img.url}`;
+          console.log('Imagen cargada:', fullUrl);
+          return { ...img, url: fullUrl };
+        });
+
+        console.log('Lista de imágenes final:', this.imageList);
+      },
+      error: (error) => {
+        console.error('Error al obtener imágenes:', error);
+      },
+    });
+  }
+
   // ====== Guardar local
   saveLocal() {
     this.editLocal.tipoLocal = this.auxCatalogo;
     this.editLocal.estadoDisponibilidad = this.auxEstado;
     this.localService.create(this.editLocal).subscribe({
-      next: (data: LocalModel) => {
-        this.editLocal = data;
+      next: (response) => {
         this.visibleUpdate = false;
         this.toastrService.success('Local guardado correctamente', 'Éxito', {
           timeOut: 3000,
           positionClass: 'toast-top-right',
         });
         this.getLocales();
+        if (this.selectedFiles && this.selectedFiles.length > 0) {
+          this.imageService
+            .uploadImages('local', response.entityId, this.selectedFiles)
+            .subscribe({
+              next: (uploadResponse) => {
+                this.toastrService.success(
+                  'Imágenes subidas correctamente',
+                  'Éxito',
+                  {
+                    timeOut: 3000,
+                    positionClass: 'toast-top-right',
+                  }
+                );
+              },
+              error: (uploadError) => {
+                console.error('Error al subir imágenes:', uploadError);
+                const errMsg =
+                  uploadError.error?.message || 'Error desconocido';
+                this.toastrService.error(errMsg, 'Error', {
+                  timeOut: 3000,
+                  positionClass: 'toast-top-center',
+                });
+              },
+            });
+        }
       },
       error: (error) => {
         console.error('Error al guardar el local:', error);
@@ -151,23 +210,44 @@ export class LocalesComponent implements OnInit {
   }
 
   // ====== Switch de visibilidad del modal
-  toggleModal(number: number) {
-    switch (number) {
+  toggleModal(mode: number): void {
+    switch (mode) {
+      case 1:
+        this.updating = false;
+        this.eliminating = false;
+        this.isShowingGallery = false;
+        this.editLocal = new LocalModel();
+        this.visibleUpdate = true;
+        break;
       case 2:
         this.updating = true;
+        this.eliminating = false;
+        this.isShowingGallery = false;
+        this.visibleUpdate = true;
         break;
       case 3:
         this.eliminating = true;
+        this.updating = false;
+        this.isShowingGallery = false;
+        this.visibleUpdate = true;
         break;
-      case 4:
+      case 5:
+        this.isShowingGallery = true;
         this.updating = false;
         this.eliminating = false;
+        this.visibleUpdate = true;
+        break;
+      case 4:
+        this.visibleUpdate = false;
+        this.updating = false;
+        this.eliminating = false;
+        this.isShowingGallery = false;
+        this.imageList = [];
         break;
       default:
-        this.editLocal = new LocalModel();
-        break;
+        this.visibleUpdate = !this.visibleUpdate;
+        this.cleanSelectedFiles();
     }
-    this.visibleUpdate = !this.visibleUpdate;
   }
 
   setEditLocal(local: LocalModel) {

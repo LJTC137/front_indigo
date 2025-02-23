@@ -114,7 +114,11 @@
     <h5 cModalTitle>
       {{ updating ? "Actualizar" : eliminating ? "Eliminar" : "Registrar" }}
     </h5>
-    <button (click)="toggleModal(4)" cButtonClose></button>
+    <button
+      (click)="toggleModal(4)"
+      (click)="cleanData()"
+      cButtonClose
+    ></button>
   </c-modal-header>
   <c-modal-body>
     <c-container *ngIf="!eliminating && !isShowingGallery" fluid>
@@ -207,7 +211,7 @@
           </ng-select>
         </c-col>
         <!-- ============== imagenes ============== -->
-        <c-col xs="12" class="my-2">
+        <c-col xs="12" class="my-2" *ngIf="!updating && !eliminating">
           <label cLabel for="images">Imagenes</label>
           <input
             cFormControl

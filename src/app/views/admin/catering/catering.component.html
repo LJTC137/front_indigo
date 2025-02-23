@@ -85,7 +85,7 @@
                     (click)="setEditCatering(catering)"
                     (click)="toggleModal(2)"
                     class="mx-2 mb-2"
-                    color="primary"
+                    color="info"
                   >
                     <svg [cIcon]="icons.cilPen" size="md"></svg>
                   </button>
@@ -128,7 +128,11 @@
     <h5 cModalTitle>
       {{ updating ? "Actualizar" : eliminating ? "Eliminar" : "Registrar" }}
     </h5>
-    <button (click)="toggleModal(4)" cButtonClose></button>
+    <button
+      (click)="toggleModal(4)"
+      (click)="cleanData()"
+      cButtonClose
+    ></button>
   </c-modal-header>
   <c-modal-body>
     <c-container *ngIf="!eliminating && !isShowingGallery" fluid>

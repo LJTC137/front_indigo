@@ -20,7 +20,7 @@ export class ProductoTecnicoService {
     return this.http.get<ProductoTecnicoModel>(`${this.URL}/${id}`);
   }
 
-  create(data: ProductoTecnicoModel): Observable<ProductoTecnicoModel> {
+  create(data: ProductoTecnicoModel): Observable<any> {
     return this.http.post<ProductoTecnicoModel>(`${this.URL}`, data);
   }
 

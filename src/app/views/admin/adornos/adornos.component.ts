@@ -33,7 +33,6 @@ export class AdornosComponent implements OnInit {
   coloresList: ColorModel[] = [];
   selectedColors: ColorModel[] = [];
   imageList: ImageModel[] = [];
-  imagelistexample: any[] = [];
 
   constructor(
     private adornoService: AdornoService,

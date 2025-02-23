@@ -57,15 +57,15 @@ export class ColoresComponent implements OnInit {
         this.getColores();
       },
       error: (error) => {
-        this.toastrService.error(error, 'Error', {
+        const errorMessage = error.error?.message || 'Error desconocido';
+        this.toastrService.error(errorMessage, 'Error', {
           timeOut: 3000,
-          positionClass: 'toast-top-right',
+          positionClass: 'toast-top-center',
         });
       },
     });
   }
 
-  // ====== Actualizar color
   // ====== Actualizar color
   updateColor() {
     this.colorService.update(this.editColor.idColor, this.editColor).subscribe({

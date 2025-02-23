@@ -6,6 +6,8 @@ import { CatalogoService } from 'src/app/services/catalogo.service';
 import { ToastrService } from 'ngx-toastr';
 import { variables } from 'src/app/variables';
 import { MontajeService } from 'src/app/services/montaje.service';
+import { ImageModel } from 'src/app/models/image.model';
+import { ImageService } from 'src/app/services/images.service';
 
 @Component({
   selector: 'app-montajes',
@@ -20,6 +22,8 @@ export class MontajesComponent implements OnInit {
   updating: boolean = false;
   eliminating: boolean = false;
   visibleUpdate: boolean = false;
+  isShowingGallery: boolean = false;
+  imageList: ImageModel[] = [];
 
   // Auxiliar para selección de catálogos
   auxTipoMontaje: CatalogoModel = new CatalogoModel();
@@ -31,12 +35,18 @@ export class MontajesComponent implements OnInit {
   constructor(
     private montajeService: MontajeService,
     private catalogoService: CatalogoService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private imageService: ImageService
   ) {}
 
   ngOnInit(): void {
     this.getMontajes();
     this.getCatalogos();
+  }
+
+  cleanData() {
+    this.auxTipoMontaje = new CatalogoModel();
+    this.auxTipoCobro = new CatalogoModel();
   }
 
   // ====== Obtener montajes
@@ -72,20 +82,76 @@ export class MontajesComponent implements OnInit {
     });
   }
 
+  selectedFiles: FileList | null = null;
+
+  onFileSelected(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      this.selectedFiles = target.files;
+    }
+  }
+
+  cleanSelectedFiles() {
+    this.selectedFiles = null;
+  }
+
+  findImages(montaje: MontajeModel) {
+    this.imageService.findImages('montaje', montaje.idMontaje).subscribe({
+      next: (data) => {
+        this.imageList = data.map((img: any) => {
+          const fullUrl = `${variables.api.url.replace(/\/$/, '')}${img.url}`;
+          console.log('Imagen cargada:', fullUrl);
+          return { ...img, url: fullUrl };
+        });
+
+        console.log('Lista de imágenes final:', this.imageList);
+      },
+      error: (error) => {
+        console.error('Error al obtener imágenes:', error);
+      },
+    });
+  }
+
   // ====== Guardar montaje
   saveMontaje() {
     // Asignar los catálogos seleccionados
     this.editMontaje.tipoMontaje = this.auxTipoMontaje;
     this.editMontaje.tipoCobro = this.auxTipoCobro;
+    console.log(this.editMontaje);
+
     this.montajeService.create(this.editMontaje).subscribe({
-      next: (data: MontajeModel) => {
-        this.editMontaje = data;
+      next: (response) => {
         this.visibleUpdate = false;
         this.toastrService.success('Montaje guardado correctamente', 'Éxito', {
           timeOut: 3000,
           positionClass: 'toast-top-right',
         });
         this.getMontajes();
+        if (this.selectedFiles && this.selectedFiles.length > 0) {
+          this.imageService
+            .uploadImages('montaje', response.entityId, this.selectedFiles)
+            .subscribe({
+              next: (uploadResponse) => {
+                this.toastrService.success(
+                  'Imágenes subidas correctamente',
+                  'Éxito',
+                  {
+                    timeOut: 3000,
+                    positionClass: 'toast-top-right',
+                  }
+                );
+              },
+              error: (uploadError) => {
+                console.error('Error al subir imágenes:', uploadError);
+                const errMsg =
+                  uploadError.error?.message || 'Error desconocido';
+                this.toastrService.error(errMsg, 'Error', {
+                  timeOut: 3000,
+                  positionClass: 'toast-top-center',
+                });
+              },
+            });
+        }
       },
       error: (error) => {
         console.error('Error al guardar el montaje:', error);
@@ -158,25 +224,44 @@ export class MontajesComponent implements OnInit {
   }
 
   // ====== Alternar visibilidad del modal
-  toggleModal(number: number) {
-    switch (number) {
+  toggleModal(mode: number): void {
+    switch (mode) {
+      case 1:
+        this.updating = false;
+        this.eliminating = false;
+        this.isShowingGallery = false;
+        this.editMontaje = new MontajeModel();
+        this.visibleUpdate = true;
+        break;
       case 2:
         this.updating = true;
+        this.eliminating = false;
+        this.isShowingGallery = false;
+        this.visibleUpdate = true;
         break;
       case 3:
         this.eliminating = true;
+        this.updating = false;
+        this.isShowingGallery = false;
+        this.visibleUpdate = true;
         break;
-      case 4:
+      case 5:
+        this.isShowingGallery = true;
         this.updating = false;
         this.eliminating = false;
+        this.visibleUpdate = true;
+        break;
+      case 4:
+        this.visibleUpdate = false;
+        this.updating = false;
+        this.eliminating = false;
+        this.isShowingGallery = false;
+        this.imageList = [];
         break;
       default:
-        this.editMontaje = new MontajeModel();
-        this.auxTipoMontaje = new CatalogoModel();
-        this.auxTipoCobro = new CatalogoModel();
-        break;
+        this.visibleUpdate = !this.visibleUpdate;
+        this.cleanSelectedFiles();
     }
-    this.visibleUpdate = !this.visibleUpdate;
   }
 
   // ====== Asignar montaje para edición

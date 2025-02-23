@@ -6,6 +6,8 @@ import { ProductoTecnicoService } from 'src/app/services/producto-tecnico.servic
 import { CatalogoService } from 'src/app/services/catalogo.service';
 import { ToastrService } from 'ngx-toastr';
 import { variables } from 'src/app/variables';
+import { ImageModel } from 'src/app/models/image.model';
+import { ImageService } from 'src/app/services/images.service';
 
 @Component({
   selector: 'app-producto-tecnico',
@@ -20,6 +22,8 @@ export class ProductoTecnicoComponent implements OnInit {
   updating: boolean = false;
   eliminating: boolean = false;
   visibleUpdate: boolean = false;
+  isShowingGallery: boolean = false;
+  imageList: ImageModel[] = [];
 
   // Para los catálogos: asumimos que "Tipo producto" y "Estado producto" son los nombres en el catálogo.
   catalogoList: CatalogoModel[] = []; // Para "Tipo de producto"
@@ -31,12 +35,18 @@ export class ProductoTecnicoComponent implements OnInit {
   constructor(
     private productoService: ProductoTecnicoService,
     private catalogoService: CatalogoService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private imageService: ImageService
   ) {}
 
   ngOnInit(): void {
     this.getProductos();
     this.getCatalogos();
+  }
+
+  cleanData() {
+    this.auxCatalogo = new CatalogoModel();
+    this.auxEstado = new CatalogoModel();
   }
 
   // ====== Obtener productos técnicos
@@ -58,11 +68,9 @@ export class ProductoTecnicoComponent implements OnInit {
   private getCatalogos() {
     this.catalogoService.getList().subscribe({
       next: (data: CatalogoModel[]) => {
-        // Filtrar para obtener el catálogo de "Tipo producto"
         this.catalogoList = data.filter(
           (c) => c.nombreCatalogo === 'Tipo producto'
         );
-        // Filtrar para obtener el catálogo de "Estado producto"
         this.estadoList = data.filter(
           (c) => c.nombreCatalogo === 'Estado producto'
         );
@@ -76,20 +84,73 @@ export class ProductoTecnicoComponent implements OnInit {
     });
   }
 
+  selectedFiles: FileList | null = null;
+
+  onFileSelected(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      this.selectedFiles = target.files;
+    }
+  }
+
+  cleanSelectedFiles() {
+    this.selectedFiles = null;
+  }
+
+  findImages(producto: ProductoTecnicoModel) {
+    this.imageService.findImages('producto', producto.idProducto).subscribe({
+      next: (data) => {
+        this.imageList = data.map((img: any) => {
+          const fullUrl = `${variables.api.url.replace(/\/$/, '')}${img.url}`;
+          console.log('Imagen cargada:', fullUrl);
+          return { ...img, url: fullUrl };
+        });
+
+        console.log('Lista de imágenes final:', this.imageList);
+      },
+      error: (error) => {
+        console.error('Error al obtener imágenes:', error);
+      },
+    });
+  }
+
   // ====== Guardar producto técnico
   saveProduct() {
-    // Asignamos los catálogos seleccionados a los campos del modelo
     this.editProducto.tipoProducto = this.auxCatalogo;
     this.editProducto.estadoEquipo = this.auxEstado;
     this.productoService.create(this.editProducto).subscribe({
-      next: (data: ProductoTecnicoModel) => {
-        this.editProducto = data;
+      next: (response) => {
         this.visibleUpdate = false;
         this.toastrService.success('Producto guardado correctamente', 'Éxito', {
           timeOut: 3000,
           positionClass: 'toast-top-right',
         });
         this.getProductos();
+        if (this.selectedFiles && this.selectedFiles.length > 0) {
+          this.imageService
+            .uploadImages('producto', response.entityId, this.selectedFiles)
+            .subscribe({
+              next: (uploadResponse) => {
+                this.toastrService.success(
+                  'Imágenes subidas correctamente',
+                  'Éxito',
+                  {
+                    timeOut: 3000,
+                    positionClass: 'toast-top-right',
+                  }
+                );
+              },
+              error: (uploadError) => {
+                console.error('Error al subir imágenes:', uploadError);
+                const errMsg =
+                  uploadError.error?.message || 'Error desconocido';
+                this.toastrService.error(errMsg, 'Error', {
+                  timeOut: 3000,
+                  positionClass: 'toast-top-center',
+                });
+              },
+            });
+        }
       },
       error: (error) => {
         console.error('Error al guardar el producto:', error);
@@ -162,25 +223,44 @@ export class ProductoTecnicoComponent implements OnInit {
   }
 
   // ====== Alternar visibilidad del modal
-  toggleModal(number: number) {
-    switch (number) {
+  toggleModal(mode: number): void {
+    switch (mode) {
+      case 1:
+        this.updating = false;
+        this.eliminating = false;
+        this.isShowingGallery = false;
+        this.editProducto = new ProductoTecnicoModel();
+        this.visibleUpdate = true;
+        break;
       case 2:
         this.updating = true;
+        this.eliminating = false;
+        this.isShowingGallery = false;
+        this.visibleUpdate = true;
         break;
       case 3:
         this.eliminating = true;
+        this.updating = false;
+        this.isShowingGallery = false;
+        this.visibleUpdate = true;
         break;
-      case 4:
+      case 5:
+        this.isShowingGallery = true;
         this.updating = false;
         this.eliminating = false;
+        this.visibleUpdate = true;
+        break;
+      case 4:
+        this.visibleUpdate = false;
+        this.updating = false;
+        this.eliminating = false;
+        this.isShowingGallery = false;
+        this.imageList = [];
         break;
       default:
-        this.editProducto = new ProductoTecnicoModel();
-        this.auxCatalogo = new CatalogoModel();
-        this.auxEstado = new CatalogoModel();
-        break;
+        this.visibleUpdate = !this.visibleUpdate;
+        this.cleanSelectedFiles();
     }
-    this.visibleUpdate = !this.visibleUpdate;
   }
 
   // ====== Asignar producto para edición

@@ -20,7 +20,7 @@ export class LocalService {
     return this.http.get<LocalModel>(`${this.URL}/${id}`);
   }
 
-  create(data: LocalModel): Observable<LocalModel> {
+  create(data: LocalModel): Observable<any> {
     return this.http.post<LocalModel>(`${this.URL}`, data);
   }
 

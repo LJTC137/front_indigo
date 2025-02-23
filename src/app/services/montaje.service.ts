@@ -20,7 +20,7 @@ export class MontajeService {
     return this.http.get<MontajeModel>(`${this.URL}/${id}`);
   }
 
-  create(data: MontajeModel): Observable<MontajeModel> {
+  create(data: MontajeModel): Observable<any> {
     return this.http.post<MontajeModel>(`${this.URL}`, data);
   }
 
