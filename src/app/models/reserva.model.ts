@@ -4,32 +4,30 @@ import { CateringModel } from './catering.model';
 import { LocalModel } from './local.model';
 import { MontajeModel } from './montaje.model';
 import { ProductoTecnicoModel } from './producto-tecnico.model';
-import { UsuarioModel } from './usuario.model';
 
 export class ReservaModel {
   idReserva: number = 0;
-  nombreClienteReserva: string = ''; // ya
-  cedulaClienteReserva: string = ''; // ya 
-  telefonoClienteReserva: string = ''; // ya
-  cantidadPersonas: number = 0; // ya
-  horaInicio: string = ''; // ya
-  horaFin: string = ''; // ya
-  fechaInicioEvento: Date = new Date(); // ya
-  fechaFinEvento: Date = new Date(); // ya
-  asesor: AsesorModel = new AsesorModel(); // ya
-  tipoEvento: CatalogoModel = new CatalogoModel(); // ya
-  estadoReserva: CatalogoModel = new CatalogoModel(); // ya
-  reservaCatering: CateringModel[] = []; // ya
-  local: LocalModel = new LocalModel(); // ya
-  montaje: MontajeModel = new MontajeModel(); // ya
-  reservaProducto: ProductoTecnicoModel[] = []; // ya
-  usuario: UsuarioModel = new UsuarioModel(); // ya
-  fechaRegistro: Date = new Date(); // ya
-  cantidadSillas: number = 0; // ya
-  cantidadMesas: number = 0; // ya
+  nombreClienteReserva: string = '';
+  identificacionClienteReserva: string = '';
+  telefonoClienteReserva: string = '';
+  cantidadPersonas: number = 0;
+  horaInicio: string = '';
+  horaFin: string = '';
+  fechaInicioEvento: Date = new Date();
+  fechaFinEvento: Date = new Date();
+  asesor: AsesorModel = new AsesorModel();
+  tipoEvento: CatalogoModel = new CatalogoModel();
+  estadoReserva: CatalogoModel = new CatalogoModel();
+  reservaCatering: CateringModel[] = [];
+  local: LocalModel = new LocalModel();
+  montaje: MontajeModel = new MontajeModel();
+  reservaProducto: ProductoTecnicoModel[] = [];
+  fechaRegistro: Date = new Date();
+  cantidadSillas: number = 0;
+  cantidadMesas: number = 0;
   costoMontaje: number = 0;
   costoAdornos: number = 0;
   costoServicio: number = 0;
   costoTotal: number = 0;
-  estado: boolean = true; // ya
+  estado: boolean = true;
 }

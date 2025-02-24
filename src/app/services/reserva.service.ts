@@ -20,7 +20,7 @@ export class ReservaService {
     return this.http.get<ReservaModel>(`${this.URL}/${id}`);
   }
 
-  create(data: ReservaModel): Observable<ReservaModel> {
+  create(data: ReservaModel): Observable<any> {
     return this.http.post<ReservaModel>(`${this.URL}`, data);
   }
 

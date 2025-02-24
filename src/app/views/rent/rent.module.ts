@@ -4,11 +4,14 @@ import { ListRentComponent } from './list-rent/list-rent.component';
 import { FormRentComponent } from './form-rent/form-rent.component';
 import { RentRoutingModule } from './rent-routing.module';
 import {
+  AccordionModule,
   ButtonModule,
   CardModule,
+  CarouselModule,
   FormModule,
   GridModule,
   ModalModule,
+  SharedModule,
   TableModule,
   UtilitiesModule,
 } from '@coreui/angular';
@@ -16,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { IconModule } from '@coreui/icons-angular';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [ListRentComponent, FormRentComponent],
@@ -24,6 +28,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     RentRoutingModule,
     GridModule,
     CardModule,
+    CarouselModule,
     FormModule,
     FormsModule,
     RouterModule,
@@ -33,6 +38,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
     TableModule,
     UtilitiesModule,
     ModalModule,
+    HttpClientModule,
+    AccordionModule,
+    SharedModule,
   ],
 })
 export class RentModule {}

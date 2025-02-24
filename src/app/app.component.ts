@@ -11,7 +11,7 @@ import { getAnalytics } from "firebase/analytics";
   styleUrls:['app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'PartyHard';
+  title = 'Indigo';
 
   
   constructor(

@@ -14,6 +14,7 @@
                 <label cLabel for="nombreCliente">Nombre del cliente</label>
                 <input
                   type="text"
+                  [(ngModel)]="reserva.nombreClienteReserva"
                   cFormControl
                   name="nombreCliente"
                   id="nombreCliente"
@@ -21,11 +22,12 @@
               </c-col>
               <!-- ======== Identificación cliente reserva ======== -->
               <c-col lg="6" class="my-2">
-                <label cLabel for="identificacionCliente"
-                  >Identificación del cliente</label
-                >
+                <label cLabel for="identificacionCliente">
+                  Identificación del cliente
+                </label>
                 <input
                   type="text"
+                  [(ngModel)]="reserva.identificacionClienteReserva"
                   cFormControl
                   name="identificacionCliente"
                   id="identificacionCliente"
@@ -38,6 +40,7 @@
                 >
                 <input
                   type="text"
+                  [(ngModel)]="reserva.telefonoClienteReserva"
                   cFormControl
                   name="telefonoCliente"
                   id="telefonoCliente"
@@ -45,11 +48,12 @@
               </c-col>
               <!-- ======== Cantidad personas ======== -->
               <c-col lg="6" class="my-2">
-                <label cLabel for="cantidadPersonas"
-                  >Cantidad de invitados al evento</label
-                >
+                <label cLabel for="cantidadPersonas">
+                  Cantidad de invitados al evento
+                </label>
                 <input
                   type="number"
+                  [(ngModel)]="reserva.cantidadPersonas"
                   cFormControl
                   name="cantidadPersonas"
                   id="cantidadPersonas"
@@ -60,6 +64,7 @@
                 <label cLabel for="horaInicio">Hora de inicio del evento</label>
                 <input
                   type="text"
+                  [(ngModel)]="reserva.horaInicio"
                   cFormControl
                   name="horaInicio"
                   id="horaInicio"
@@ -67,14 +72,15 @@
               </c-col>
               <!-- ======== Hora fin ======== -->
               <c-col lg="6" class="my-2">
-                <label cLabel for="horaInicio"
+                <label cLabel for="horaFin"
                   >Hora de finalización del evento</label
                 >
                 <input
                   type="text"
+                  [(ngModel)]="reserva.horaFin"
                   cFormControl
-                  name="horaInicio"
-                  id="horaInicio"
+                  name="horaFin"
+                  id="horaFin"
                 />
               </c-col>
               <!-- ======== Fecha inicio de reserva ======== -->
@@ -82,6 +88,7 @@
                 <label cLabel for="fechaInicioEvento">Fecha del evento</label>
                 <input
                   type="date"
+                  [(ngModel)]="reserva.fechaInicioEvento"
                   cFormControl
                   name="fechaInicioEvento"
                   id="fechaInicioEvento"
@@ -89,11 +96,12 @@
               </c-col>
               <!-- ======== Fecha fin de reserva ======== -->
               <c-col lg="6" class="my-2">
-                <label cLabel for="fechaFinEvento"
-                  >Fecha de finalización del evento</label
-                >
+                <label cLabel for="fechaFinEvento">
+                  Fecha de finalización del evento
+                </label>
                 <input
                   type="date"
+                  [(ngModel)]="reserva.fechaFinEvento"
                   cFormControl
                   name="fechaFinEvento"
                   id="fechaFinEvento"
@@ -111,6 +119,26 @@
                       Elegir asesor
                     </button>
                   </c-col>
+                  <!-- ======= Acordeon ======= -->
+                  <c-col xs="12" *ngIf="auxAsesor">
+                    <c-accordion>
+                      <c-accordion-item #accordionItem>
+                        <ng-template cTemplateId="accordionHeaderTemplate">
+                          <button
+                            cAccordionButton
+                            (click)="accordionItem.toggleItem()"
+                          >
+                            {{ auxAsesor.nombreCompleto }}
+                          </button>
+                        </ng-template>
+                        <ng-template cTemplateId="accordionBodyTemplate">
+                          <div class="accordion-body">
+                            {{ auxAsesor.descripcion || "Sin descripción" }}
+                          </div>
+                        </ng-template>
+                      </c-accordion-item>
+                    </c-accordion>
+                  </c-col>
                 </c-row>
               </c-col>
               <!-- ======== Adornos ======== -->
@@ -123,6 +151,31 @@
                     <button cButton (click)="selectionModal('adornos')">
                       Elegir adornos
                     </button>
+                  </c-col>
+                  <!-- acordeon -->
+                  <c-col xs="12">
+                    <c-accordion>
+                      <c-accordion-item
+                        *ngFor="let adorno of selectedAdornos; let i = index"
+                        #accordionItem="cAccordionItem"
+                        [visible]="false"
+                      >
+                        <ng-template cTemplateId="accordionHeaderTemplate">
+                          <button
+                            (click)="accordionItem.toggleItem()"
+                            [collapsed]="!accordionItem.visible"
+                            cAccordionButton
+                          >
+                            {{ adorno.adorno.nombre }}
+                          </button>
+                        </ng-template>
+                        <ng-template cTemplateId="accordionBodyTemplate">
+                          <div class="accordion-body">
+                            <strong>{{ adorno.adorno.descripcion }}</strong>
+                          </div>
+                        </ng-template>
+                      </c-accordion-item>
+                    </c-accordion>
                   </c-col>
                 </c-row>
               </c-col>
@@ -137,6 +190,31 @@
                       Elegir productos
                     </button>
                   </c-col>
+                  <!-- Acordeon -->
+                  <c-col xs="12">
+                    <c-accordion>
+                      <c-accordion-item
+                        *ngFor="let producto of selectedProducto; let i = index"
+                        #accordionItem="cAccordionItem"
+                        [visible]="false"
+                      >
+                        <ng-template cTemplateId="accordionHeaderTemplate">
+                          <button
+                            (click)="accordionItem.toggleItem()"
+                            [collapsed]="!accordionItem.visible"
+                            cAccordionButton
+                          >
+                            {{ producto.nombre }}
+                          </button>
+                        </ng-template>
+                        <ng-template cTemplateId="accordionBodyTemplate">
+                          <div class="accordion-body">
+                            <strong>{{ producto.descripcion }}</strong>
+                          </div>
+                        </ng-template>
+                      </c-accordion-item>
+                    </c-accordion>
+                  </c-col>
                 </c-row>
               </c-col>
               <!-- ======== select catering ======== -->
@@ -149,6 +227,31 @@
                     <button cButton (click)="selectionModal('catering')">
                       Elegir catering
                     </button>
+                  </c-col>
+                  <!-- ======= Acordeon ======= -->
+                  <c-col xs="12">
+                    <c-accordion>
+                      <c-accordion-item
+                        *ngFor="let catering of selectedCatering; let i = index"
+                        #accordionItem="cAccordionItem"
+                        [visible]="false"
+                      >
+                        <ng-template cTemplateId="accordionHeaderTemplate">
+                          <button
+                            (click)="accordionItem.toggleItem()"
+                            [collapsed]="!accordionItem.visible"
+                            cAccordionButton
+                          >
+                            {{ catering.nombreServicio }}
+                          </button>
+                        </ng-template>
+                        <ng-template cTemplateId="accordionBodyTemplate">
+                          <div class="accordion-body">
+                            <strong>{{ catering.descripcion }}</strong>
+                          </div>
+                        </ng-template>
+                      </c-accordion-item>
+                    </c-accordion>
                   </c-col>
                 </c-row>
               </c-col>
@@ -163,6 +266,31 @@
                       Elegir equipo
                     </button>
                   </c-col>
+                  <!-- Acordeon -->
+                  <c-col xs="12">
+                    <c-accordion>
+                      <c-accordion-item
+                        *ngFor="let equipo of selectedEquipo; let i = index"
+                        #accordionItem="cAccordionItem"
+                        [visible]="false"
+                      >
+                        <ng-template cTemplateId="accordionHeaderTemplate">
+                          <button
+                            (click)="accordionItem.toggleItem()"
+                            [collapsed]="!accordionItem.visible"
+                            cAccordionButton
+                          >
+                            {{ equipo.equipo.tipoEquipo.valorCatalogo }}
+                          </button>
+                        </ng-template>
+                        <ng-template cTemplateId="accordionBodyTemplate">
+                          <div class="accordion-body">
+                            <strong>{{ equipo.equipo.descripcion }}</strong>
+                          </div>
+                        </ng-template>
+                      </c-accordion-item>
+                    </c-accordion>
+                  </c-col>
                 </c-row>
               </c-col>
               <!-- ======== select Montaje ======== -->
@@ -176,6 +304,57 @@
                       Elegir montaje
                     </button>
                   </c-col>
+                  <c-col xs="12" *ngIf="auxMontaje">
+                    <c-accordion>
+                      <c-accordion-item #accordionItem>
+                        <ng-template cTemplateId="accordionHeaderTemplate">
+                          <button
+                            cAccordionButton
+                            (click)="accordionItem.toggleItem()"
+                          >
+                            {{ auxMontaje.nombre }}
+                          </button>
+                        </ng-template>
+                        <ng-template cTemplateId="accordionBodyTemplate">
+                          <div class="accordion-body">
+                            {{ auxMontaje.descripcion || "Sin descripción" }}
+                          </div>
+                        </ng-template>
+                      </c-accordion-item>
+                    </c-accordion>
+                  </c-col>
+                </c-row>
+              </c-col>
+              <!-- ======== select Local ======== -->
+              <c-col lg="6" class="my-3">
+                <c-row>
+                  <c-col class="mb-1" xs="12">
+                    <label cLabel>Local para el evento</label>
+                  </c-col>
+                  <c-col class="mb-1" lg="6">
+                    <button cButton (click)="selectionModal('local')">
+                      Elegir local
+                    </button>
+                  </c-col>
+                  <c-col xs="12" *ngIf="auxLocal">
+                    <c-accordion>
+                      <c-accordion-item #accordionItem>
+                        <ng-template cTemplateId="accordionHeaderTemplate">
+                          <button
+                            cAccordionButton
+                            (click)="accordionItem.toggleItem()"
+                          >
+                            {{ auxLocal.nombreLocal }}
+                          </button>
+                        </ng-template>
+                        <ng-template cTemplateId="accordionBodyTemplate">
+                          <div class="accordion-body">
+                            {{ auxLocal.descripcion || "Sin descripción" }}
+                          </div>
+                        </ng-template>
+                      </c-accordion-item>
+                    </c-accordion>
+                  </c-col>
                 </c-row>
               </c-col>
               <hr class="my-4" />
@@ -185,10 +364,9 @@
                 <ng-select
                   name="tipoEvento"
                   id="tipoEvento"
-                  [items]="catalogoList"
+                  [items]="tipoEventoList"
                   bindLabel="valorCatalogo"
-                  [(ngModel)]="auxTipoEvento"
-                  (change)="selectTipoEvento(auxTipoEvento)"
+                  [(ngModel)]="auxTipoReserva"
                 >
                 </ng-select>
               </c-col>
@@ -200,10 +378,9 @@
                 <ng-select
                   name="estadoReserva"
                   id="estadoReserva"
-                  [items]="catalogoList"
+                  [items]="estadoReservaList"
                   bindLabel="valorCatalogo"
                   [(ngModel)]="auxEstadoReserva"
-                  (change)="selectEstadoReserva(auxEstadoReserva)"
                 >
                 </ng-select>
               </c-col>
@@ -212,6 +389,7 @@
                 <label cLabel for="cantidadSillas">Cantidad de sillas</label>
                 <input
                   type="number"
+                  [(ngModel)]="reserva.cantidadSillas"
                   cFormControl
                   name="cantidadSillas"
                   id="cantidadSillas"
@@ -222,10 +400,23 @@
                 <label cLabel for="cantidadMesas">Cantidad de mesas</label>
                 <input
                   type="number"
+                  [(ngModel)]="reserva.cantidadMesas"
                   cFormControl
                   name="cantidadMesas"
                   id="cantidadMesas"
                 />
+              </c-col>
+            </c-row>
+            <c-row class="justify-content-end">
+              <c-col lg="5" *ngIf="!isUpdating">
+                <button cButton color="primary" (click)="saveRent()">
+                  Guardar
+                </button>
+              </c-col>
+              <c-col lg="5">
+                <button cButton color="primary" (click)="updateRent()">
+                  Actualizar
+                </button>
               </c-col>
             </c-row>
           </form>
@@ -247,94 +438,230 @@
   <c-modal-body>
     <c-row class="justify-content-center">
       <!-- ======== select asesor ======== -->
-      <c-col xs="12" class="mb-2" *ngIf="chooseAsesor === true">
-        <label cLabel for="asesor">Seleccione un Asesor</label>
-        <ng-select
-          class="mb-2"
-          name="asesor"
-          id="asesor"
-          [items]="asesorList"
-          bindLabel="nombreCompleto"
-          [(ngModel)]="auxAsesor"
-          (change)="selectAsesor(auxAsesor)"
-        >
-        </ng-select>
-      </c-col>
+      <c-row class="justify-content-center" *ngIf="chooseAsesor === true">
+        <c-col xs="12" class="mb-2">
+          <label cLabel for="asesor">Seleccione un Asesor</label>
+          <ng-select
+            class="mb-2"
+            name="asesor"
+            id="asesor"
+            [items]="asesorList"
+            bindLabel="nombreCompleto"
+            [(ngModel)]="auxAsesor"
+            (change)="selectAsesor(auxAsesor)"
+          >
+          </ng-select>
+        </c-col>
+      </c-row>
       <!-- ======== select Adornos ======== -->
-      <c-col xs="12" class="mb-2" *ngIf="chooseAdornos === true">
-        <label cLabel for="adornoEvento">Seleccione un adorno</label>
-        <ng-select
-          class="mb-2"
-          name="adornoEvento"
-          id="adornoEvento"
-          [items]="adornosList"
-          bindLabel="nombreCompleto"
-        >
-        </ng-select>
-      </c-col>
+      <c-row class="justify-content-center" *ngIf="chooseAdornos === true">
+        <c-col lg="6" xs="12" class="mb-2">
+          <label cLabel for="adornoEvento">Seleccione un adorno</label>
+          <ng-select
+            class="mb-2"
+            name="adornoEvento"
+            id="adornoEvento"
+            [items]="adornosList"
+            bindLabel="nombre"
+            [(ngModel)]="auxAdorno"
+            (change)="selectAdorno(auxAdorno)"
+          >
+          </ng-select>
+        </c-col>
+        <c-col lg="6" xs="12" class="mb-2">
+          <label cLabel for="colorAdorno">Seleccione un color</label>
+          <ng-select
+            class="mb-2"
+            name="colorAdorno"
+            id="colorAdorno"
+            [items]="auxAdorno.adornoColor"
+            bindLabel="nombre"
+            [(ngModel)]="auxColor"
+          >
+          </ng-select>
+        </c-col>
+        <c-col lg="6" xs="12" class="mb-2">
+          <label cLabel for="cantidadAdornos">Cantidad de adornos</label>
+          <input
+            type="number"
+            [(ngModel)]="adornoReserva.cantidadAdornos"
+            cFormControl
+            name="cantidadAdornos"
+            id="cantidadAdornos"
+          />
+        </c-col>
+      </c-row>
       <!-- ======== select Productos ======== -->
-      <c-col xs="12" class="mb-2" *ngIf="chooseProductos === true">
-        <label cLabel for="productoEvento">Seleccione una opción</label>
-        <ng-select
-          class="mb-2"
-          name="productoEvento"
-          id="productoEvento"
-          bindLabel="valorCatalogo"
-        >
-        </ng-select>
-      </c-col>
+      <c-row class="justify-content-center" *ngIf="chooseProductos === true">
+        <c-col xs="12" class="mb-2">
+          <label cLabel for="productoEvento">Seleccione una opción</label>
+          <ng-select
+            class="mb-2"
+            name="productoEvento"
+            id="productoEvento"
+            [items]="productoList"
+            bindLabel="nombre"
+            [(ngModel)]="auxProducto"
+            (change)="selectProducto(auxProducto)"
+          >
+          </ng-select>
+        </c-col>
+      </c-row>
       <!-- ======== select Catering ======== -->
-      <c-col xs="12" class="mb-2" *ngIf="chooseCatering === true">
-        <label cLabel for="servicioCatering"
-          >Seleccione un servicio de catering</label
-        >
-        <ng-select
-          class="mb-2"
-          name="servicioCatering"
-          id="servicioCatering"
-          bindLabel="valorCatalogo"
-        >
-        </ng-select>
-      </c-col>
+      <c-row class="justify-content-center" *ngIf="chooseCatering === true">
+        <c-col xs="12" class="mb-2">
+          <label cLabel for="servicioCatering">
+            Seleccione un servicio de catering
+          </label>
+          <ng-select
+            class="mb-2"
+            name="servicioCatering"
+            id="servicioCatering"
+            bindLabel="nombreServicio"
+            [items]="cateringList"
+            [(ngModel)]="auxCatering"
+            (change)="selectCatering(auxCatering)"
+          >
+          </ng-select>
+        </c-col>
+      </c-row>
       <!-- ======== select Equipo ======== -->
-      <c-col xs="12" class="mb-2" *ngIf="chooseEquipo === true">
-        <label cLabel for="equipoServicio"
-          >Seleccione un equipo de servicio</label
-        >
-        <ng-select
-          class="mb-2"
-          name="equipoServicio"
-          id="equipoServicio"
-          bindLabel="valorCatalogo"
-        >
-        </ng-select>
-      </c-col>
+      <c-row class="justify-content-center" *ngIf="chooseEquipo === true">
+        <c-col xs="12" class="mb-2">
+          <label cLabel for="equipoServicio">
+            Seleccione un equipo de servicio
+          </label>
+          <ng-select
+            class="mb-2"
+            name="equipoServicio"
+            id="equipoServicio"
+            bindLabel="tipoEquipo.valorCatalogo"
+            [items]="equipoList"
+            [(ngModel)]="auxEquipo"
+            (change)="selectEquipo(auxEquipo)"
+          >
+          </ng-select>
+        </c-col>
+        <c-col xs="12" class="mb-2">
+          <label cLabel for="horaXServicio"> Horas de servicio </label>
+          <input
+            cFormControl
+            class="mb-2"
+            name="horaXServicio"
+            id="horaXServicio"
+            type="number"
+            [(ngModel)]="equipoReserva.horaXServicio"
+          />
+        </c-col>
+      </c-row>
       <!-- ======== select Local ======== -->
-      <c-col xs="12" class="mb-2" *ngIf="chooseLocal === true">
-        <label cLabel for="localEvento">Seleccione un local</label>
-        <ng-select
-          class="mb-2"
-          name="localEvento"
-          id="localEvento"
-          bindLabel="valorCatalogo"
-        >
-        </ng-select>
-      </c-col>
+      <c-row class="justify-content-center" *ngIf="chooseLocal === true">
+        <c-col xs="12" class="mb-2">
+          <label cLabel for="localEvento">Seleccione un local</label>
+          <ng-select
+            class="mb-2"
+            name="localEvento"
+            id="localEvento"
+            bindLabel="nombreLocal"
+            [items]="localList"
+            [(ngModel)]="auxLocal"
+            (change)="selectLocal(auxLocal)"
+          >
+          </ng-select>
+        </c-col>
+      </c-row>
       <!-- ======== select Montaje ======== -->
-      <c-col xs="12" class="mb-2" *ngIf="chooseMontaje === true">
-        <label cLabel for="montajeEvento">Seleccione una opción</label>
-        <ng-select
-          class="mb-2"
-          name="montajeEvento"
-          id="montajeEvento"
-          bindLabel="valorCatalogo"
-        >
-        </ng-select>
-      </c-col>
+      <c-row class="justify-content-center" *ngIf="chooseMontaje === true">
+        <c-col xs="12" class="mb-2">
+          <label cLabel for="montajeEvento">Seleccione una opción</label>
+          <ng-select
+            class="mb-2"
+            name="montajeEvento"
+            id="montajeEvento"
+            bindLabel="nombre"
+            [items]="montajeList"
+            [(ngModel)]="auxMontaje"
+            (change)="selectMontaje(auxMontaje)"
+          >
+          </ng-select>
+        </c-col>
+      </c-row>
+      <!-- ======== Galeria de imagenes ======== -->
+      <c-container *ngIf="isShowingGallery">
+        <c-row class="justify-content-center">
+          <c-col xs="12" class="my-2">
+            <c-carousel *ngIf="imageList.length > 0" [interval]="5000">
+              <c-carousel-inner>
+                <c-carousel-item *ngFor="let image of imageList">
+                  <img
+                    [src]="image.url"
+                    class="d-block w-100"
+                    alt="Imagen de adorno"
+                  />
+                </c-carousel-item>
+              </c-carousel-inner>
+              <c-carousel-control caption="Previous" direction="prev">
+              </c-carousel-control>
+              <c-carousel-control caption="Next" direction="next">
+              </c-carousel-control>
+            </c-carousel>
+          </c-col>
+        </c-row>
+      </c-container>
     </c-row>
   </c-modal-body>
   <c-modal-footer>
-    <button cButton color="primary">Guardar</button>
-    <button (click)="toggleModal()" cButton color="secondary">Cancelar</button>
+    <!-- ============== adornos ============== -->
+    <c-row class="justify-content-end text-end" *ngIf="chooseAdornos">
+      <c-col lg="5">
+        <button cButton color="primary" (click)="agregarAdorno()">
+          Guardar
+        </button>
+      </c-col>
+      <c-col lg="5">
+        <button (click)="toggleModal()" cButton color="secondary">
+          Cancelar
+        </button>
+      </c-col>
+    </c-row>
+    <!-- ============== Productos ============== -->
+    <c-row class="justify-content-end text-end" *ngIf="chooseProductos">
+      <c-col lg="5">
+        <button cButton color="primary" (click)="agregarProducto()">
+          Guardar
+        </button>
+      </c-col>
+      <c-col lg="5">
+        <button (click)="toggleModal()" cButton color="secondary">
+          Cancelar
+        </button>
+      </c-col>
+    </c-row>
+    <!-- ============== Equipo ============== -->
+    <c-row class="justify-content-end text-end" *ngIf="chooseEquipo">
+      <c-col lg="5">
+        <button cButton color="primary" (click)="agregarEquipo()">
+          Guardar
+        </button>
+      </c-col>
+      <c-col lg="5">
+        <button (click)="toggleModal()" cButton color="secondary">
+          Cancelar
+        </button>
+      </c-col>
+    </c-row>
+    <!-- ============== Equipo ============== -->
+    <c-row class="justify-content-end text-end" *ngIf="chooseCatering">
+      <c-col lg="5">
+        <button cButton color="primary" (click)="agregarCatering()">
+          Guardar
+        </button>
+      </c-col>
+      <c-col lg="5">
+        <button (click)="toggleModal()" cButton color="secondary">
+          Cancelar
+        </button>
+      </c-col>
+    </c-row>
   </c-modal-footer>
 </c-modal>
