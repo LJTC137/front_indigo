@@ -40,7 +40,7 @@ const routes: Routes = [
     data: {
       title: 'Iniciar Sesión'
     },
-    canActivate:[loginGuard]
+    canActivate:[]
   },
   {
     path: '404',

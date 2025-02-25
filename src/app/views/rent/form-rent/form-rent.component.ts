@@ -80,6 +80,7 @@ export class FormRentComponent implements OnInit {
   chooseLocal: boolean = false;
   chooseMontaje: boolean = false;
   isShowingGallery: boolean = false;
+  esCostoPack: boolean = false;
   //============== Imagen
   imageList: ImageModel[] = [];
   //============== Reserva
@@ -243,6 +244,67 @@ export class FormRentComponent implements OnInit {
     });
   }
 
+  changeCosto() {
+    this.esCostoPack = !this.esCostoPack;
+  }
+
+  calcularCostoTotal() {
+    let costoMontaje = 0;
+    if (this.esCostoPack) {
+      costoMontaje =
+        this.reserva.cantidadSillas * this.auxMontaje.costoSilla +
+        this.reserva.cantidadMesas * this.auxMontaje.costoMesa;
+    } else {
+      costoMontaje = this.reserva.cantidadPack * this.auxMontaje.costoPack;
+    }
+
+    let costoAdornos = 0;
+    if (this.selectedAdornos && this.selectedAdornos.length > 0) {
+      console.log('aqui');
+      console.log(this.selectedAdornos);
+      this.selectedAdornos.forEach((adornoReserva) => {
+        costoAdornos +=
+          adornoReserva.adorno.precioUnitario *
+          this.adornoReserva.cantidadAdornos;
+      });
+    }
+
+    let costoCatering = 0;
+    if (this.selectedCatering && this.selectedCatering.length > 0) {
+      this.selectedCatering.forEach((catering) => {
+        costoCatering +=
+          catering.precioXPersona * this.reserva.cantidadPersonas;
+      });
+    }
+
+    let costoEquipo = 0;
+    if (this.selectedEquipo && this.selectedEquipo.length > 0) {
+      this.selectedEquipo.forEach((equipoReserva) => {
+        if (equipoReserva.horaXServicio === 0) {
+          costoEquipo += equipoReserva.equipo.precioXHora;
+        } else {
+          costoEquipo += equipoReserva.equipo.tarifaXEvento;
+        }
+      });
+    }
+
+    let costoServicio = costoCatering + costoEquipo;
+
+    const costoTotal = costoMontaje + costoAdornos + costoServicio;
+
+    this.reserva.costoMontaje = costoMontaje;
+    this.reserva.costoAdornos = costoAdornos;
+    this.reserva.costoServicio = costoServicio;
+    this.reserva.costoTotal = costoTotal;
+
+    console.log('Costos calculados:', {
+      costoMontaje,
+      costoAdornos,
+      costoServicio,
+      costoTotal,
+    });
+  }
+
   selectionModal(option: string) {
     switch (option) {
       case 'asesor':
@@ -401,6 +463,7 @@ export class FormRentComponent implements OnInit {
   agregarAdorno() {
     const nuevoAdorno = new AdornoXReservaModel();
     nuevoAdorno.adorno = this.auxAdorno;
+    nuevoAdorno.cantidadAdornos = this.adornoReserva.cantidadAdornos;
     nuevoAdorno.color = this.auxColor.hexadecimal;
     this.selectedAdornos.push(nuevoAdorno);
   }
@@ -453,17 +516,12 @@ export class FormRentComponent implements OnInit {
     this.reserva.reservaProducto = this.selectedProducto;
     this.reserva.tipoEvento = this.auxTipoReserva;
     this.reserva.estadoReserva = this.auxEstadoReserva;
-    // Guarda la reserva principal
     this.reservaService.create(this.reserva).subscribe({
       next: (response) => {
-        console.log(response);
-
         const reservaId = response.entityId;
         // Guardar cada relación con adorno:
         this.selectedAdornos.forEach((adornoReserva) => {
-          // Asigna la reserva a la relación (o solo el id, según el modelo)
           adornoReserva.reserva.idReserva = reservaId;
-          // O, alternativamente: adornoReserva.reservaId = reservaId;
           this.reservaAdorno.create(adornoReserva).subscribe({
             next: (response) => {
               console.log('Adorno guardado', response);
@@ -477,7 +535,6 @@ export class FormRentComponent implements OnInit {
         // Guardar cada relación con equipo:
         this.selectedEquipo.forEach((equipoReserva) => {
           equipoReserva.reserva.idReserva = reservaId;
-          // O: equipoReserva.reservaId = reservaId;
           this.reservaEquipo.create(equipoReserva).subscribe({
             next: (response) => {
               console.log('Equipo guardado', response);

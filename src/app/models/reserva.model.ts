@@ -25,6 +25,7 @@ export class ReservaModel {
   fechaRegistro: Date = new Date();
   cantidadSillas: number = 0;
   cantidadMesas: number = 0;
+  cantidadPack: number = 0;
   costoMontaje: number = 0;
   costoAdornos: number = 0;
   costoServicio: number = 0;
