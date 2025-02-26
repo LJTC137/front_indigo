@@ -13,6 +13,7 @@ import { ImageService } from 'src/app/services/images.service';
   styleUrls: ['./asesores.component.scss'],
 })
 export class AsesoresComponent implements OnInit {
+  searchTerm:any
   rutas = variables;
   icons = freeSet;
   asesorList: AsesorModel[] = [];

@@ -11,6 +11,17 @@ export class TokenService {
     return false;
   }
 
+  getRoles(): string[] {
+    const token = this.getToken();
+    if (!token) {
+      return [];
+    }
+    const payload = token.split('.')[1];
+    const values = atob(payload);
+    const valuesJson = JSON.parse(values);
+    return valuesJson?.roles || [];
+  }
+
   setToken(token: string): void {
     localStorage.setItem('token', token);
   }

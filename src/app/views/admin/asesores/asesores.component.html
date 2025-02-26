@@ -25,7 +25,14 @@
                   <label cLabel for="nameFt">Nombre de asesor:</label>
                 </c-col>
                 <c-col lg="9" xs="6">
-                  <input cFormControl id="nameFt" name="nameFt" type="text" />
+                  <input
+                    cFormControl
+                    id="nameFt"
+                    name="nameFt"
+                    type="text"
+                    [(ngModel)]="searchTerm"
+                    placeholder="Buscar asesor por nombre"
+                  />
                 </c-col>
               </c-row>
             </c-col>
@@ -59,8 +66,8 @@
               <th>Accion</th>
             </thead>
             <!-- ============================ Tabla - body ============================ -->
-            <tbody *ngFor="let asesor of asesorList">
-              <tr>
+            <tbody>
+              <tr *ngFor="let asesor of asesorList | asesorNombre : searchTerm">
                 <td>{{ asesor.nombreCompleto }}</td>
                 <td>{{ asesor.correo }}</td>
                 <td>{{ asesor.telefono }}</td>

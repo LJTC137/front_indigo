@@ -25,7 +25,14 @@
                   <label cLabel for="nameFt">Nombre catalogo:</label>
                 </c-col>
                 <c-col lg="9" xs="6">
-                  <input cFormControl id="nameFt" name="nameFt" type="text" />
+                  <input
+                    cFormControl
+                    id="nameFt"
+                    name="nameFt"
+                    type="text"
+                    [(ngModel)]="searchTerm"
+                    placeholder="Buscar catálogo por nombre"
+                  />
                 </c-col>
               </c-row>
             </c-col>
@@ -55,8 +62,12 @@
               <th>Accion</th>
             </thead>
             <!-- ============================ Tabla - body ============================ -->
-            <tbody *ngFor="let catalogo of catalogoList">
-              <tr>
+            <tbody>
+              <tr
+                *ngFor="
+                  let catalogo of catalogoList | catalogoNombre : searchTerm
+                "
+              >
                 <td>{{ catalogo.nombreCatalogo }}</td>
                 <td>{{ catalogo.valorCatalogo }}</td>
                 <td>

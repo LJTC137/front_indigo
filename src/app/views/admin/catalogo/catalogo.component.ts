@@ -12,6 +12,7 @@ import { variables } from 'src/app/variables';
 })
 export class CatalogoComponent implements OnInit {
   rutas = variables;
+  searchTerm: any
   icons = freeSet;
   catalogoList: CatalogoModel[] = [];
   updating: boolean = false;

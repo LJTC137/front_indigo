@@ -5,7 +5,7 @@
         <c-card-group>
           <c-card class="p-4">
             <c-card-body>
-              <form cForm>
+              <form cForm (ngSubmit)="onLogin()" #loginForm="ngForm">
                 <h1>Inicio de sesión</h1>
                 <p class="text-medium-emphasis">Ingrese sus credenciales</p>
                 <c-input-group class="mb-3">
@@ -14,9 +14,11 @@
                   </span>
                   <input
                     autoComplete="email"
-                    name="email"
+                    name="correo"
                     cFormControl
                     placeholder="Correo"
+                    [(ngModel)]="usuario.identificacion"
+                    required
                   />
                 </c-input-group>
                 <c-input-group class="mb-4">
@@ -26,14 +28,16 @@
                   <input
                     autoComplete="current-password"
                     cFormControl
-                    name="password"
+                    name="contrasenia"
                     placeholder="Contraseña"
                     type="password"
+                    [(ngModel)]="usuario.contrasenia"
+                    required
                   />
                 </c-input-group>
                 <c-row>
                   <c-col xs="6">
-                    <button cButton class="px-4" color="primary">
+                    <button type="submit" cButton class="px-4" color="primary">
                       Iniciar sesión
                     </button>
                   </c-col>
@@ -52,13 +56,14 @@
                     <c-col lg="12">
                       <h2>Bienvenido</h2>
                       <br />
-                      <p>Este es el sistema de gestion de Indigo</p></c-col
-                    >
+                      <p>Este es el sistema de gestión de Indigo</p>
+                    </c-col>
                     <c-col>
                       <img
                         src="../../../../assets/images/logo2.png"
                         width="50%"
                         class="my-5 mx-5"
+                        alt="Logo Indigo"
                       />
                     </c-col>
                   </c-row>

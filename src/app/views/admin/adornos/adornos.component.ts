@@ -25,6 +25,7 @@ export class AdornosComponent implements OnInit {
   eliminating: boolean = false;
   visibleUpdate: boolean = false;
   isShowingGallery: boolean = false;
+  searchTerm: any;
   //====== Catalogo
   catalogoList: CatalogoModel[] = [];
   auxCatalogo: CatalogoModel = new CatalogoModel();

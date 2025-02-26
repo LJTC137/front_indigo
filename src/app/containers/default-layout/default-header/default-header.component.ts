@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-
-import { ClassToggleService, HeaderComponent } from '@coreui/angular';
+import { TokenService } from 'src/app/services/token.service';
+import { HeaderComponent } from '@coreui/angular';
 import { freeSet } from '@coreui/icons';
 
 @Component({
@@ -10,15 +9,19 @@ import { freeSet } from '@coreui/icons';
   templateUrl: './default-header.component.html',
 })
 export class DefaultHeaderComponent extends HeaderComponent {
-
   icons = freeSet;
-  @Input() sidebarId: string = "sidebar";
+  @Input() sidebarId: string = 'sidebar';
 
-  public newMessages = new Array(4)
-  public newTasks = new Array(5)
-  public newNotifications = new Array(5)
+  public newMessages = new Array(4);
+  public newTasks = new Array(5);
+  public newNotifications = new Array(5);
 
-  constructor() {
+  constructor(private tokenService: TokenService, private router: Router) {
     super();
+  }
+
+  logout(): void {
+    this.tokenService.logOut();
+    this.router.navigate(['/login']);
   }
 }

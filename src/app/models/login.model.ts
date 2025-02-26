@@ -1,4 +1,4 @@
-export class LoginUsuarioMoedl {
+export class LoginUsuarioModel {
   contrasenia: string = '';
-  correo: string = '';
+  identificacion: string = '';
 }

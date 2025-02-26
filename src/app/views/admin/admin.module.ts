@@ -27,6 +27,16 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { ColoresComponent } from './colores/colores.component';
+import { AdornoNombrePipe } from 'src/app/pipes/adorno.pipe';
+import { AsesorNombrePipe } from 'src/app/pipes/asesor.pipe';
+import { CatalogoNombrePipe } from 'src/app/pipes/catalogo.pipe';
+import { CateringNombrePipe } from 'src/app/pipes/catering.pipe';
+import { ColorNombrePipe } from 'src/app/pipes/color.pipe';
+import { EquipoCantidadPersonasPipe } from 'src/app/pipes/equipo.pipe';
+import { LocalFiltroPipe } from 'src/app/pipes/local.pipe';
+import { MontajeNombrePipe } from 'src/app/pipes/montaje.pipe';
+import { ProductoTecnicoNombrePipe } from 'src/app/pipes/producto.pipe';
+import { UsuarioIdentificacionPipe } from 'src/app/pipes/usuario.pipe';
 
 @NgModule({
   declarations: [
@@ -41,6 +51,16 @@ import { ColoresComponent } from './colores/colores.component';
     UsuariosComponent,
     AdminNavigationComponent,
     ColoresComponent,
+    AdornoNombrePipe,
+    AsesorNombrePipe,
+    CatalogoNombrePipe,
+    CateringNombrePipe,
+    ColorNombrePipe,
+    EquipoCantidadPersonasPipe,
+    LocalFiltroPipe,
+    MontajeNombrePipe,
+    ProductoTecnicoNombrePipe,
+    UsuarioIdentificacionPipe,
   ],
   imports: [
     CommonModule,

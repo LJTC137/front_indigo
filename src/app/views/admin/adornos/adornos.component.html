@@ -25,7 +25,14 @@
                   <label cLabel for="nameFt">Nombre adorno:</label>
                 </c-col>
                 <c-col lg="9" xs="6">
-                  <input cFormControl id="nameFt" name="nameFt" type="text" />
+                  <input
+                    cFormControl
+                    id="nameFt"
+                    name="nameFt"
+                    type="text"
+                    [(ngModel)]="searchTerm"
+                    placeholder="Buscar adorno por nombre"
+                  />
                 </c-col>
               </c-row>
             </c-col>
@@ -58,8 +65,8 @@
               <th>Accion</th>
             </thead>
             <!-- ============================ Tabla - body ============================ -->
-            <tbody *ngFor="let adorno of adornoList">
-              <tr>
+            <tbody>
+              <tr *ngFor="let adorno of adornoList | adornoNombre : searchTerm">
                 <td>{{ adorno.nombre }}</td>
                 <td>{{ adorno.descripcion }}</td>
                 <td>{{ adorno.dimensiones }}</td>

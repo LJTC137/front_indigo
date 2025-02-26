@@ -7,11 +7,14 @@ import {
 } from '@angular/router';
 import { TokenService } from '../services/token.service';
 
-export const authGuard: CanActivateFn = (
+export const adminGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
   const tokenService = inject(TokenService);
   const router = inject(Router);
-  return tokenService.isLogged() ? true : router.parseUrl('/login');
+  if (tokenService.isLogged() && tokenService.isAdmin()) {
+    return true;
+  }
+  return router.parseUrl('/rent');
 };
