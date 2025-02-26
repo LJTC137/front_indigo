@@ -24,8 +24,8 @@ export class ReservaService {
     return this.http.post<ReservaModel>(`${this.URL}`, data);
   }
 
-  update(id: number, data: ReservaModel): Observable<ReservaModel> {
-    return this.http.patch<ReservaModel>(`${this.URL}/${id}`, data);
+  update(id: number, data: any): Observable<any> {
+    return this.http.patch<any>(`${this.URL}/${id}`, data);
   }
 
   delete(id: number): Observable<void> {

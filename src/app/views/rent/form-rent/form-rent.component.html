@@ -115,7 +115,11 @@
                     <label cLabel>Asesor para el evento</label>
                   </c-col>
                   <c-col class="mb-1" lg="6">
-                    <button cButton (click)="selectionModal('asesor')">
+                    <button
+                      cButton
+                      (click)="selectionModal('asesor')"
+                      [disabled]="isUpdating"
+                    >
                       Elegir asesor
                     </button>
                   </c-col>
@@ -133,7 +137,14 @@
                         </ng-template>
                         <ng-template cTemplateId="accordionBodyTemplate">
                           <div class="accordion-body">
-                            {{ auxAsesor.descripcion || "Sin descripción" }}
+                            <span class="fw-semibold">Descripción:</span>
+                            {{ auxAsesor.descripcion }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">Especialización:</span>
+                            {{ auxAsesor.especialidad || "Sin especialidad" }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">Teléfono:</span>
+                            {{ auxAsesor.telefono || "Sin descripción" }}
                           </div>
                         </ng-template>
                       </c-accordion-item>
@@ -148,7 +159,11 @@
                     <label cLabel>Adornos para el evento</label>
                   </c-col>
                   <c-col class="mb-1" lg="6">
-                    <button cButton (click)="selectionModal('adornos')">
+                    <button
+                      cButton
+                      (click)="selectionModal('adornos')"
+                      [disabled]="isUpdating"
+                    >
                       Elegir adornos
                     </button>
                   </c-col>
@@ -167,14 +182,11 @@
                             cAccordionButton
                           >
                             {{ adorno.adorno.nombre }}
-
-                            <p class="text-success ms-5">
-                              ${{ adorno.adorno.precioUnitario }}
-                            </p>
                             <button
                               cButton
                               class="ms-5 btn-secondary"
                               (click)="quitarAdorno(i)"
+                              [hidden]="isUpdating"
                             >
                               Quitar
                             </button>
@@ -182,7 +194,29 @@
                         </ng-template>
                         <ng-template cTemplateId="accordionBodyTemplate">
                           <div class="accordion-body">
-                            <strong>{{ adorno.adorno.descripcion }}</strong>
+                            <span class="fw-semibold">Descripción:</span>
+                            {{ adorno.adorno.descripcion }}
+                            <br class="my-1" />
+                            <span class="fw-semibold text-success"
+                              >Precio por unidad:</span
+                            >
+                            ${{ adorno.adorno.precioUnitario }}
+                            <br class="my-1" />
+                            <span class="fw-semibold text-success"
+                              >Cantidad solicitada:</span
+                            >
+                            {{ adorno.cantidadAdornos }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">
+                              Cantidad disponible:
+                            </span>
+                            {{ adorno.adorno.cantidad }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">Dimensiónes:</span>
+                            {{ adorno.adorno.dimensiones }}
+                            <br />
+                            <span class="fw-semibold">Tipo de adorno:</span>
+                            {{ adorno.adorno.tipoAdorno.valorCatalogo }}
                           </div>
                         </ng-template>
                       </c-accordion-item>
@@ -197,7 +231,11 @@
                     <label cLabel>Productos tecnológicos para el evento</label>
                   </c-col>
                   <c-col class="mb-1" lg="6">
-                    <button cButton (click)="selectionModal('productos')">
+                    <button
+                      cButton
+                      (click)="selectionModal('productos')"
+                      [disabled]="isUpdating"
+                    >
                       Elegir productos
                     </button>
                   </c-col>
@@ -216,11 +254,11 @@
                             cAccordionButton
                           >
                             {{ producto.nombre }}
-                            <p class="text-success ms-5"></p>
                             <button
                               cButton
                               class="ms-5 btn-secondary"
                               (click)="quitarProducto(i)"
+                              [hidden]="isUpdating"
                             >
                               Quitar
                             </button>
@@ -228,7 +266,18 @@
                         </ng-template>
                         <ng-template cTemplateId="accordionBodyTemplate">
                           <div class="accordion-body">
-                            <strong>{{ producto.descripcion }}</strong>
+                            <span class="fw-semibold">Nombre:</span>
+                            {{ producto.nombre }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">Descripción:</span>
+                            {{ producto.descripcion }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">Capacidad técnica:</span>
+                            {{ producto.capacidadTecnica }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">Tipo de producto:</span>
+                            {{ producto.tipoProducto.valorCatalogo }}
+                            <br class="my-1" />
                           </div>
                         </ng-template>
                       </c-accordion-item>
@@ -243,7 +292,11 @@
                     <label cLabel>Catering para el evento</label>
                   </c-col>
                   <c-col class="mb-1" lg="6">
-                    <button cButton (click)="selectionModal('catering')">
+                    <button
+                      cButton
+                      (click)="selectionModal('catering')"
+                      [disabled]="isUpdating"
+                    >
                       Elegir catering
                     </button>
                   </c-col>
@@ -262,13 +315,11 @@
                             cAccordionButton
                           >
                             {{ catering.nombreServicio }}
-                            <p class="text-success ms-5">
-                              ${{ catering.precioXPersona }}
-                            </p>
                             <button
                               cButton
                               class="ms-5 btn-secondary"
                               (click)="quitarCatering(i)"
+                              [hidden]="isUpdating"
                             >
                               Quitar
                             </button>
@@ -276,7 +327,17 @@
                         </ng-template>
                         <ng-template cTemplateId="accordionBodyTemplate">
                           <div class="accordion-body">
-                            <strong>{{ catering.descripcion }}</strong>
+                            <span class="fw-semibold">Tipo de catering:</span>
+                            {{ catering.tipoCatering.valorCatalogo }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">Descripción:</span>
+                            {{ catering.descripcion }}
+                            <br class="my-1" />
+                            <span class="fw-semibold text-success"
+                              >Precio por persona:</span
+                            >
+                            ${{ catering.precioXPersona }}
+                            <br class="my-1" />
                           </div>
                         </ng-template>
                       </c-accordion-item>
@@ -291,7 +352,11 @@
                     <label cLabel>Equipo de servicio para el evento</label>
                   </c-col>
                   <c-col class="mb-1" lg="6">
-                    <button cButton (click)="selectionModal('equipo')">
+                    <button
+                      cButton
+                      (click)="selectionModal('equipo')"
+                      [disabled]="isUpdating"
+                    >
                       Elegir equipo
                     </button>
                   </c-col>
@@ -310,22 +375,11 @@
                             cAccordionButton
                           >
                             {{ equipo.equipo.tipoEquipo.valorCatalogo }}
-                            <p
-                              class="text-success ms-5"
-                              *ngIf="equipo.horaXServicio === 0"
-                            >
-                              ${{ equipo.equipo.precioXHora }}
-                            </p>
-                            <p
-                              class="text-success ms-5"
-                              *ngIf="equipo.horaXServicio !== 0"
-                            >
-                              ${{ equipo.equipo.tarifaXEvento }}
-                            </p>
                             <button
                               cButton
                               class="ms-5 btn-secondary"
                               (click)="quitarEquipo(i)"
+                              [hidden]="isUpdating"
                             >
                               Quitar
                             </button>
@@ -333,7 +387,32 @@
                         </ng-template>
                         <ng-template cTemplateId="accordionBodyTemplate">
                           <div class="accordion-body">
-                            <strong>{{ equipo.equipo.descripcion }}</strong>
+                            <span class="fw-semibold"
+                              >Tipo de contratación:</span
+                            >
+                            {{ equipo.equipo.tipoContratacion.valorCatalogo }}
+                            <br class="my-1" />
+                            <div
+                              *ngIf="equipo.horaXServicio !== 0"
+                              class="text-success"
+                            >
+                              <span class="fw-semibold">Precio por hora:</span>
+                              ${{ equipo.equipo.precioXHora }}
+                              <br class="my-1" />
+                            </div>
+                            <div
+                              *ngIf="equipo.horaXServicio === 0"
+                              class="text-success"
+                            >
+                              <span class="fw-semibold"
+                                >Precio por evento:</span
+                              >
+                              ${{ equipo.equipo.tarifaXEvento }}
+                              <br class="my-1" />
+                            </div>
+                            <span class="fw-semibold">Descripción:</span>
+                            {{ equipo.equipo.descripcion }}
+                            <br class="my-1" />
                           </div>
                         </ng-template>
                       </c-accordion-item>
@@ -348,7 +427,11 @@
                     <label cLabel>Montaje para el evento</label>
                   </c-col>
                   <c-col class="mb-1" lg="6">
-                    <button cButton (click)="selectionModal('montaje')">
+                    <button
+                      cButton
+                      (click)="selectionModal('montaje')"
+                      [disabled]="isUpdating"
+                    >
                       Elegir montaje
                     </button>
                   </c-col>
@@ -366,7 +449,38 @@
                         </ng-template>
                         <ng-template cTemplateId="accordionBodyTemplate">
                           <div class="accordion-body">
-                            {{ auxMontaje.descripcion || "Sin descripción" }}
+                            <span class="fw-semibold">Descripción:</span>
+                            {{ auxMontaje.descripcion }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">Tipo de montaje:</span>
+                            {{ auxMontaje.tipoMontaje.valorCatalogo }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">Tipo de cobro:</span>
+                            {{ auxMontaje.tipoCobro.valorCatalogo }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">Capacidad máxima:</span>
+                            {{ auxMontaje.capacidadMaxima }}
+                            <br class="my-1" />
+                            <span class="fw-semibold"
+                              >Deposito Reembolsable:</span
+                            >
+                            {{ auxMontaje.depositoReembolsable }}
+                            <br class="my-1" />
+                            <span class="fw-semibold text-success"
+                              >Costo individual de la mesa:</span
+                            >
+                            ${{ auxMontaje.costoMesa }}
+                            <br class="my-1" />
+                            <span class="fw-semibold text-success"
+                              >Costo individual de la silla:</span
+                            >
+                            ${{ auxMontaje.costoSilla }}
+                            <br class="my-1" />
+                            <span class="fw-semibold text-success"
+                              >Costo individual de mesa con sillas:</span
+                            >
+                            ${{ auxMontaje.costoPack }}
+                            <br class="my-1" />
                           </div>
                         </ng-template>
                       </c-accordion-item>
@@ -381,7 +495,11 @@
                     <label cLabel>Local para el evento</label>
                   </c-col>
                   <c-col class="mb-1" lg="6">
-                    <button cButton (click)="selectionModal('local')">
+                    <button
+                      cButton
+                      (click)="selectionModal('local')"
+                      [disabled]="isUpdating"
+                    >
                       Elegir local
                     </button>
                   </c-col>
@@ -398,7 +516,35 @@
                         </ng-template>
                         <ng-template cTemplateId="accordionBodyTemplate">
                           <div class="accordion-body">
-                            {{ auxLocal.descripcion || "Sin descripción" }}
+                            <span class="fw-semibold">Descripción:</span>
+                            {{ auxLocal.descripcion }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">Tipo de local:</span>
+                            {{ auxLocal.tipoLocal.valorCatalogo }}
+                            <br class="my-1" />
+                            <span class="fw-semibold">Sector del local:</span>
+                            {{ auxLocal.sector }}
+                            <br class="my-1" />
+                            <span class="fw-semibold"
+                              >Dirección del local:</span
+                            >
+                            {{ auxLocal.sector }}
+                            <br class="my-1" />
+                            <span class="fw-semibold"
+                              >Dirección del local:</span
+                            >
+                            {{ auxLocal.sector }}
+                            <br class="my-1" />
+                            <span class="fw-semibold text-success"
+                              >Costo de tarifa por hora:</span
+                            >
+                            ${{ auxLocal.tarifaXHora }}
+                            <br class="my-1" />
+                            <span class="fw-semibold text-success"
+                              >Costo de tarifa por día:</span
+                            >
+                            ${{ auxLocal.tarifaXDia }}
+                            <br class="my-1" />
                           </div>
                         </ng-template>
                       </c-accordion-item>
@@ -434,64 +580,57 @@
                 </ng-select>
               </c-col>
               <hr class="my-4" />
-              <!-- ======== Costo por pack ======== -->
-              <c-col lg="7" class="my-2">
+              <c-col xs="12" class="my-2">
+                <c-form-check>
+                  <input
+                    cFormCheckInput
+                    id="esLocalPorDia"
+                    type="checkbox"
+                    (click)="changeCobroLocal()"
+                  />
+                  <label cFormCheckLabel for="esLocalPorDia">
+                    {{
+                      esLocalPorDia
+                        ? "Cobrar reserva de local por días"
+                        : "Cobrar reserva de local por horas"
+                    }}
+                  </label>
+                </c-form-check>
+              </c-col>
+              <!-- ======== Cantidad Sillas ======== -->
+              <c-col lg="6" class="my-2">
+                <label cLabel for="cantidadSillas">Cantidad de sillas</label>
                 <input
-                  type="checkbox"
-                  class="mx-2"
-                  [(ngModel)]="esCostoPack"
-                  cFormCheckInput
-                  (click)="changeCosto()"
+                  type="number"
+                  [(ngModel)]="reserva.cantidadSillas"
+                  cFormControl
+                  name="cantidadSillas"
+                  id="cantidadSillas"
+                />
+              </c-col>
+              <!-- ======== Cantidad Mesas ======== -->
+              <c-col lg="6" class="my-2">
+                <label cLabel for="cantidadMesas">Cantidad de mesas</label>
+                <input
+                  type="number"
+                  [(ngModel)]="reserva.cantidadMesas"
+                  cFormControl
                   name="cantidadMesas"
                   id="cantidadMesas"
                 />
-                <label cFormCheckLabel for="checkOne" class="mx-2">
-                  {{
-                    esCostoPack
-                      ? "Cobrar por mesas y sillas"
-                      : "Cobrar por pack"
-                  }}
-                </label>
               </c-col>
-              <ng-container *ngIf="esCostoPack; else packTemplate">
-                <!-- ======== Cantidad Sillas ======== -->
-                <c-col lg="6" class="my-2">
-                  <label cLabel for="cantidadSillas">Cantidad de sillas</label>
-                  <input
-                    type="number"
-                    [(ngModel)]="reserva.cantidadSillas"
-                    cFormControl
-                    name="cantidadSillas"
-                    id="cantidadSillas"
-                  />
-                </c-col>
-                <!-- ======== Cantidad Mesas ======== -->
-                <c-col lg="6" class="my-2">
-                  <label cLabel for="cantidadMesas">Cantidad de mesas</label>
-                  <input
-                    type="number"
-                    [(ngModel)]="reserva.cantidadMesas"
-                    cFormControl
-                    name="cantidadMesas"
-                    id="cantidadMesas"
-                  />
-                </c-col>
-              </ng-container>
-              <!-- Plantilla alternativa cuando esCostoPack es falso -->
-              <ng-template #packTemplate>
-                <c-col lg="12" class="my-2">
-                  <label cLabel for="cantidadPack"
-                    >Cantidad de mesas y sillas</label
-                  >
-                  <input
-                    type="number"
-                    [(ngModel)]="reserva.cantidadPack"
-                    cFormControl
-                    name="cantidadPack"
-                    id="cantidadPack"
-                  />
-                </c-col>
-              </ng-template>
+              <c-col lg="12" class="my-2">
+                <label cLabel for="cantidadPack"
+                  >Cantidad de mesas con sillas</label
+                >
+                <input
+                  type="number"
+                  [(ngModel)]="reserva.cantidadPack"
+                  cFormControl
+                  name="cantidadPack"
+                  id="cantidadPack"
+                />
+              </c-col>
               <hr class="my-4" />
               <!-- =========================== Costos =========================== -->
               <c-col lg="6" class="my-2">
@@ -514,8 +653,30 @@
                   id="costoAdornos"
                 />
               </c-col>
+              <c-col lg="6" class="my-2" *ngIf="esLocalPorDia">
+                <label cLabel for="tarifaXDia">Costo local</label>
+                <input
+                  type="number"
+                  [(ngModel)]="costoLocal"
+                  cFormControl
+                  name="tarifaXDia"
+                  id="tarifaXDia"
+                />
+              </c-col>
+              <c-col lg="6" class="my-2" *ngIf="!esLocalPorDia">
+                <label cLabel for="tarifaXDia">Costo local</label>
+                <input
+                  type="number"
+                  [(ngModel)]="costoLocal"
+                  cFormControl
+                  name="tarifaXDia"
+                  id="tarifaXDia"
+                />
+              </c-col>
               <c-col lg="6" class="my-2">
-                <label cLabel for="costoServicio">costoServicio</label>
+                <label cLabel for="costoServicio"
+                  >Costo servicio (Catering & Equipos de servicio)</label
+                >
                 <input
                   type="number"
                   [(ngModel)]="reserva.costoServicio"
@@ -525,18 +686,42 @@
                 />
               </c-col>
               <c-col lg="6" class="my-2">
-                <label cLabel for="costoServicio">costoServicio</label>
+                <label cLabel for="costoAsesor"
+                  >Costo por Asesor de evento</label
+                >
                 <input
                   type="number"
-                  [(ngModel)]="reserva.costoServicio"
+                  [(ngModel)]="costoAsesor"
                   cFormControl
-                  name="costoServicio"
-                  id="costoServicio"
+                  name="costoAsesor"
+                  id="costoAsesor"
+                />
+              </c-col>
+              <c-col lg="6" class="my-2">
+                <label cLabel for="costoProducto"
+                  >Costo por producto técnico</label
+                >
+                <input
+                  type="number"
+                  [(ngModel)]="costoProducto"
+                  cFormControl
+                  name="costoProducto"
+                  id="costoProducto"
+                />
+              </c-col>
+              <c-col lg="6" class="my-2">
+                <label cLabel for="costoTotal">Costo total</label>
+                <input
+                  type="number"
+                  [(ngModel)]="reserva.costoTotal"
+                  cFormControl
+                  name="costoTotal"
+                  id="costoTotal"
                 />
               </c-col>
             </c-row>
             <c-row class="justify-content-end my-3">
-              <c-col lg="2" *ngIf="!isUpdating">
+              <c-col lg="2" *ngIf="isUpdating">
                 <button cButton color="primary" (click)="calcularCostoTotal()">
                   Calcular costo
                 </button>
@@ -565,7 +750,6 @@
   size="xl"
 >
   <c-modal-header>
-    <h5 cModalTitle>Modal title</h5>
     <button (click)="selectionModal('asesor')" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>

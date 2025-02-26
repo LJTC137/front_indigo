@@ -18,10 +18,10 @@ export class ReservaModel {
   asesor: AsesorModel = new AsesorModel();
   tipoEvento: CatalogoModel = new CatalogoModel();
   estadoReserva: CatalogoModel = new CatalogoModel();
-  reservaCatering: CateringModel[] = [];
+  reservaCatering?: CateringModel[] = [];
   local: LocalModel = new LocalModel();
   montaje: MontajeModel = new MontajeModel();
-  reservaProducto: ProductoTecnicoModel[] = [];
+  reservaProducto?: ProductoTecnicoModel[] = [];
   fechaRegistro: Date = new Date();
   cantidadSillas: number = 0;
   cantidadMesas: number = 0;

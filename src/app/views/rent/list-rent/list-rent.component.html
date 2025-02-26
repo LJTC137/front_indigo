@@ -70,11 +70,13 @@
                 <td>{{ reserva.costoTotal }}</td>
                 <td>{{ reserva.estadoReserva.valorCatalogo }}</td>
                 <td>
-                  <button cButton class="me-3 mb-2" color="primary">
+                  <button
+                    cButton
+                    class="me-3 mb-2"
+                    color="primary"
+                    (click)="editReserva(reserva)"
+                  >
                     <svg [cIcon]="icons.cilPen" size="md"></svg>
-                  </button>
-                  <button cButton class="mb-2" color="danger">
-                    <svg [cIcon]="icons.cilTrash" size="md"></svg>
                   </button>
                 </td>
               </tr>
